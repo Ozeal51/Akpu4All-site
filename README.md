@@ -1,16 +1,57 @@
-# React + Vite
+﻿# Akpu4All
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+>A lightweight React application built with Vite that lets visitors browse and order authentic Nigerian meals and drinks. Designed as a minimal demo with modern styling and basic e-commerce functionality.
 
-Currently, two official plugins are available:
+## 🔧 Technologies
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React (functional components & hooks)
+- Vite (development server & build tool)
+- React Bootstrap for layout and UI
+- Framer Motion for animations
+- Context API for theme and cart state
 
-## React Compiler
+## 🚀 Quick Start
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+```bash
+# clone the repository
+ git clone https://github.com/Ozeal51/My-html-project1.git
+ cd akpu-4all
 
-## Expanding the ESLint configuration
+# install dependencies
+ npm install
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# run development server
+ npm run dev
+```
+
+Visit `http://localhost:5173` in your browser.
+
+## 📁 Structure
+
+- `src/components` – UI components (Header, cards, etc.)
+- `src/pages` – views (Home, Meals, Drinks, Cart, etc.)
+- `src/context` – state providers (theme & cart)
+- `src/data` – mock items for meals and drinks
+
+## ✨ Features
+
+- Responsive design with glass-effect navbar
+- Light/dark theme toggle
+- Cart with naira (₦) prices and totals
+- Hero section with background image and overlay
+
+## 📦 Build
+
+```bash
+npm run build
+```
+
+Production-ready files appear in `dist`.
+
+## 🤝 Contributing
+
+Feel free to open issues or PRs. This project is for learning and demonstration.
+
+## 📄 License
+
+MIT License.
