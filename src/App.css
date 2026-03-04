@@ -1,0 +1,115 @@
+/* Navbar Glass Effect */
+.navbar-glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.navbar-glass[data-bs-theme="dark"] {
+  background: rgba(33, 37, 41, 0.7);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-brand-custom {
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand-custom:hover {
+  transform: scale(1.05);
+}
+
+.nav-link {
+  position: relative;
+  color: rgba(0, 0, 0, 0.8) !important;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin: 0 0.5rem;
+}
+
+.nav-link:hover {
+  color: #ff6b35 !important;
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::before {
+  width: 100%;
+}
+
+.nav-link.active {
+  font-weight: 600;
+  color: #ff6b35 !important;
+  position: relative;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%);
+}
+
+[data-bs-theme="dark"] .nav-link {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+[data-bs-theme="dark"] .nav-link:hover {
+  color: #ff6b35 !important;
+}
+
+.hero-section {
+  background-image: url('https://media.istockphoto.com/id/2211838998/video/cooking-staff-working-on-different-tasks-at-the-restaurants-kitchen.avif?s=640x640&k=20&c=mCmFLZAVijxjImN1fhWI4q4sLIKFCHeEN91sO2nj6Fs=');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.hero-section > * {
+  position: relative;
+  z-index: 2;
+}
+
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
