@@ -113,3 +113,83 @@
   transform: translateY(-2px);
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
 }
+
+/* ===== NAV AUTH BUTTONS ===== */
+.auth-nav-btn {
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  padding: 0.3rem 0.85rem !important;
+  font-size: 0.85rem !important;
+  text-decoration: none !important;
+  transition: opacity 0.2s !important;
+}
+
+.auth-nav-btn:hover {
+  opacity: 0.88 !important;
+  color: #fff !important;
+}
+
+.auth-nav-btn-outline {
+  border: 2px solid #ff6b35 !important;
+  color: #ff6b35 !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  padding: 0.3rem 0.85rem !important;
+  font-size: 0.85rem !important;
+  text-decoration: none !important;
+  transition: background 0.2s !important;
+}
+
+.auth-nav-btn-outline:hover {
+  background: rgba(255, 107, 53, 0.08) !important;
+}
+
+/* ===== USER AVATAR IN NAV ===== */
+.nav-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  border: 2px solid rgba(255, 107, 53, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.nav-avatar:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.35);
+}
+
+.user-avatar-btn::after {
+  display: none !important;
+}
+
+.user-dropdown-menu {
+  border-radius: 12px !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12) !important;
+  min-width: 200px;
+}
+
+/* ===== MOBILE RESPONSIVE HEADER ===== */
+@media (max-width: 991px) {
+  .navbar-collapse .d-flex {
+    margin-top: 0.75rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .auth-nav-btn,
+  .auth-nav-btn-outline {
+    padding: 0.45rem 1rem !important;
+    font-size: 0.9rem !important;
+  }
+}

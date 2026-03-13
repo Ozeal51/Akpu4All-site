@@ -10,3 +10,37 @@ img {
   display: block;
   max-width: 100%;
 }
+
+/* ===== GLOBAL MOBILE TWEAKS ===== */
+@media (max-width: 575px) {
+  h1 { font-size: 1.6rem !important; }
+  h2 { font-size: 1.4rem !important; }
+  h3 { font-size: 1.2rem !important; }
+
+  .container,
+  .container-fluid {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* ===== SCROLLBAR STYLING ===== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 107, 53, 0.4);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 107, 53, 0.7);
+}
+
+/* ===== SELECTION COLOR ===== */
+::selection {
+  background: rgba(255, 107, 53, 0.25);
+}
+

@@ -9,6 +9,10 @@ import About from './pages/About.jsx'
 import Contact from './pages/Contact.jsx'
 import Cart from './pages/Cart.jsx'
 import Checkout from './pages/Checkout.jsx'
+import Login from './pages/Login.jsx'
+import Register from './pages/Register.jsx'
+import Profile from './pages/Profile.jsx'
+import { ProtectedRoute, GuestRoute } from './components/ProtectedRoute.jsx'
 import './App.css'
 
 export default function App() {
@@ -16,17 +20,58 @@ export default function App() {
     <>
       <Header />
       <main style={{ paddingTop: '4.5rem' }}>
-        <Container className="py-4">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/meals" element={<Meals />} />
-            <Route path="/drinks" element={<Drinks />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/checkout" element={<Checkout />} />
-          </Routes>
-        </Container>
+        <Routes>
+          {/* Full-page auth routes (no inner Container) */}
+          <Route
+            path="/login"
+            element={
+              <GuestRoute>
+                <Login />
+              </GuestRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <GuestRoute>
+                <Register />
+              </GuestRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Standard routes with Container */}
+          <Route
+            path="/*"
+            element={
+              <Container className="py-4">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/meals" element={<Meals />} />
+                  <Route path="/drinks" element={<Drinks />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route
+                    path="/checkout"
+                    element={
+                      <ProtectedRoute>
+                        <Checkout />
+                      </ProtectedRoute>
+                    }
+                  />
+                </Routes>
+              </Container>
+            }
+          />
+        </Routes>
       </main>
       <Footer />
     </>
