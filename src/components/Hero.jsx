@@ -96,7 +96,7 @@ export default function Hero() {
                 <div className="w-10 h-10 rounded-full bg-accent-100 text-accent-600 flex items-center justify-center font-bold">⭐</div>
                 <div>
                   <p className="font-semibold text-dark-900">4.9 Rating</p>
-                  <p className="text-sm text-dark-600">From 1000+ reviews</p>
+                  <p className="text-sm text-dark-600">From 600+ reviews</p>
                 </div>
               </div>
 
