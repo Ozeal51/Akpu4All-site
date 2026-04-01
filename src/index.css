@@ -1,46 +1,174 @@
-html, body, #root {
-  height: 100%;
-}
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-}
-img {
-  display: block;
-  max-width: 100%;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* ===== GLOBAL MOBILE TWEAKS ===== */
-@media (max-width: 575px) {
-  h1 { font-size: 1.6rem !important; }
-  h2 { font-size: 1.4rem !important; }
-  h3 { font-size: 1.2rem !important; }
+/* Global typography */
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
 
-  .container,
-  .container-fluid {
-    padding-left: 1rem;
-    padding-right: 1rem;
+  body {
+    @apply font-sans text-dark-800 bg-white;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-semibold text-dark-900;
+  }
+
+  h1 {
+    @apply text-5xl md:text-6xl;
+  }
+
+  h2 {
+    @apply text-4xl md:text-5xl;
+  }
+
+  h3 {
+    @apply text-3xl md:text-4xl;
+  }
+
+  h4 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  a {
+    @apply text-primary-600 hover:text-primary-700 transition-colors;
+  }
+
+  button {
+    @apply transition-all duration-200 ease-smooth;
   }
 }
 
-/* ===== SCROLLBAR STYLING ===== */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 107, 53, 0.4);
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 107, 53, 0.7);
+/* Component utilities */
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-accent-500 text-white font-semibold rounded-lg hover:bg-accent-600 hover:shadow-lg active:scale-95 transition-all duration-200;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 bg-dark-100 text-dark-900 font-semibold rounded-lg hover:bg-dark-200 hover:shadow-md active:scale-95 transition-all duration-200;
+  }
+
+  .btn-outline {
+    @apply px-6 py-3 border-2 border-dark-300 text-dark-900 font-semibold rounded-lg hover:border-accent-500 hover:text-accent-500 transition-all duration-200;
+  }
+
+  .btn-ghost {
+    @apply px-6 py-3 text-dark-700 font-medium rounded-lg hover:bg-dark-100 hover:text-dark-900 transition-all duration-200;
+  }
+
+  .badge-primary {
+    @apply inline-flex items-center px-3 py-1 bg-accent-100 text-accent-700 text-sm font-semibold rounded-full;
+  }
+
+  .badge-success {
+    @apply inline-flex items-center px-3 py-1 bg-fresh-50 text-fresh-700 text-sm font-semibold rounded-full;
+  }
+
+  .card {
+    @apply rounded-lg bg-white border border-dark-100 shadow-soft hover:shadow-lift transition-all duration-300;
+  }
+
+  .card-hover {
+    @apply cursor-pointer transition-all duration-300 hover:shadow-lift hover:-translate-y-1;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent;
+  }
+
+  .section-padding {
+    @apply px-4 md:px-8 lg:px-16 py-16 md:py-24 lg:py-32;
+  }
+
+  .container-max {
+    @apply max-w-7xl mx-auto;
+  }
+
+  .sr-only {
+    @apply absolute w-1 h-1 p-0 -m-1 overflow-hidden clip-hidden border-0;
+  }
 }
 
-/* ===== SELECTION COLOR ===== */
-::selection {
-  background: rgba(255, 107, 53, 0.25);
+/* Animations */
+@layer utilities {
+  .animate-fade-in-up {
+    @apply animate-slideUp;
+  }
+
+  .transition-smooth {
+    @apply transition-all duration-300 ease-smooth;
+  }
+
+  .hover-lift {
+    @apply hover:shadow-xl hover:-translate-y-2 transition-all duration-300;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-dark-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-dark-400 rounded-full hover:bg-dark-500;
+}
+
+/* Focus styles */
+:focus-visible {
+  @apply outline-2 outline-offset-2 outline-primary-500;
+}
+
+/* Input focus */
+input:focus,
+textarea:focus,
+select:focus {
+  @apply ring-2 ring-accent-500 ring-offset-1;
+}
+
+/* Utility spacing classes */
+.gap-xs {
+  @apply gap-2;
+}
+
+.gap-sm {
+  @apply gap-4;
+}
+
+.gap-md {
+  @apply gap-6;
+}
+
+.gap-lg {
+  @apply gap-8;
+}
+
+.gap-xl {
+  @apply gap-12;
+}
+
+/* Typography utilities */
+.text-balance {
+  text-wrap: balance;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 

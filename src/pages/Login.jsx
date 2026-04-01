@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { Container, Form, Button, Alert, Spinner } from 'react-bootstrap'
 import { motion } from 'framer-motion'
 import { useAuth } from '../hooks/useAuth'
-import './Auth.css'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -46,92 +44,100 @@ export default function Login() {
   const error = localError || authError
 
   return (
-    <div className="auth-page">
-      <Container className="auth-container">
+    <section className="min-h-[calc(100vh-5rem)] bg-gradient-to-br from-primary-50 via-white to-accent-50 px-4 py-12">
+      <div className="container-max flex justify-center">
         <motion.div
-          className="auth-card"
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: 0.35 }}
+          className="w-full max-w-md rounded-2xl border border-dark-100 bg-white p-8 shadow-lift"
         >
-          {/* Logo */}
-          <div className="auth-logo">
-            <span className="auth-brand">Akpu4All</span>
-            <p className="auth-subtitle">Welcome back! Sign in to your account</p>
+          <div className="mb-6 text-center">
+            <h1 className="text-3xl font-display font-bold gradient-text">Akpu4All</h1>
+            <p className="mt-2 text-sm text-dark-600">Welcome back! Sign in to your account</p>
           </div>
 
           {error && (
-            <Alert variant="danger" dismissible onClose={() => { setLocalError(''); clearError() }} className="auth-alert">
-              {error}
-            </Alert>
+            <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              <div className="flex items-start justify-between gap-3">
+                <span>{error}</span>
+                <button
+                  type="button"
+                  className="font-semibold"
+                  onClick={() => {
+                    setLocalError('')
+                    clearError()
+                  }}
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
           )}
 
-          <Form onSubmit={handleSubmit} noValidate>
-            <Form.Group className="mb-3">
-              <Form.Label>Email Address</Form.Label>
-              <Form.Control
+          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+            <div>
+              <label htmlFor="email" className="mb-2 block text-sm font-semibold text-dark-800">Email Address</label>
+              <input
+                id="email"
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Your Email"
-                className="auth-input"
+                className="w-full rounded-lg border-2 border-dark-200 px-4 py-3 focus:border-accent-500 focus:ring-2 focus:ring-accent-100"
                 autoComplete="email"
                 required
               />
-            </Form.Group>
+            </div>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Password</Form.Label>
-              <div className="password-wrapper">
-                <Form.Control
+            <div>
+              <label htmlFor="password" className="mb-2 block text-sm font-semibold text-dark-800">Password</label>
+              <div className="relative">
+                <input
+                  id="password"
                   type={showPassword ? 'text' : 'password'}
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Enter your password"
-                  className="auth-input"
+                  className="w-full rounded-lg border-2 border-dark-200 px-4 py-3 pr-12 focus:border-accent-500 focus:ring-2 focus:ring-accent-100"
                   autoComplete="current-password"
                   required
                 />
                 <button
                   type="button"
-                  className="password-toggle"
+                  className="absolute right-3 top-1/2 -translate-y-1/2"
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label="Toggle password visibility"
                 >
                   {showPassword ? '🙈' : '👁️'}
                 </button>
               </div>
-            </Form.Group>
+            </div>
 
-            <div className="d-flex justify-content-end mb-3">
-              <Link to="/forgot-password" className="auth-link small">
+            <div className="flex justify-end">
+              <Link to="/forgot-password" className="text-sm text-accent-600 hover:text-accent-700">
                 Forgot password?
               </Link>
             </div>
 
-            <Button type="submit" className="auth-btn w-100" disabled={submitting}>
-              {submitting ? (
-                <>
-                  <Spinner size="sm" className="me-2" />
-                  Signing In...
-                </>
-              ) : (
-                'Sign In'
-              )}
-            </Button>
-          </Form>
+            <button type="submit" className="btn-primary w-full" disabled={submitting}>
+              {submitting ? 'Signing In...' : 'Sign In'}
+            </button>
+          </form>
 
-          <div className="auth-divider">
+          <div className="my-5 flex items-center gap-3 text-sm text-dark-400">
+            <div className="h-px flex-1 bg-dark-200" />
             <span>New to Akpu4All?</span>
+            <div className="h-px flex-1 bg-dark-200" />
           </div>
 
-          <Link to="/register" className="btn auth-btn-outline w-100">
+          <Link to="/register" className="btn-outline block w-full text-center">
             Create an Account
           </Link>
         </motion.div>
-      </Container>
-    </div>
+      </div>
+    </section>
   )
 }

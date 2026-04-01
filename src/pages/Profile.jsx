@@ -1,14 +1,13 @@
 import { useState } from 'react'
-import { Container, Form, Button, Alert, Spinner, Tab, Nav, Badge } from 'react-bootstrap'
 import { motion } from 'framer-motion'
 import { useAuth } from '../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
-import './Auth.css'
 
 export default function Profile() {
   const { user, logout, updateProfile, changePassword } = useAuth()
   const navigate = useNavigate()
 
+  const [activeTab, setActiveTab] = useState('profile')
   const [profileData, setProfileData] = useState({ name: user?.name || '', phone: user?.phone || '' })
   const [pwData, setPwData] = useState({ currentPassword: '', newPassword: '', confirmNew: '' })
   const [profileMsg, setProfileMsg] = useState(null)
@@ -22,6 +21,7 @@ export default function Profile() {
     setProfileData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
     setProfileMsg(null)
   }
+
   const handlePwChange = (e) => {
     setPwData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
     setPwMsg(null)
@@ -33,6 +33,7 @@ export default function Profile() {
       setProfileMsg({ type: 'danger', text: 'Name cannot be empty' })
       return
     }
+
     setSavingProfile(true)
     const result = await updateProfile(profileData)
     setSavingProfile(false)
@@ -41,6 +42,7 @@ export default function Profile() {
 
   const handlePwSave = async (e) => {
     e.preventDefault()
+
     if (!pwData.currentPassword || !pwData.newPassword || !pwData.confirmNew) {
       setPwMsg({ type: 'danger', text: 'Please fill in all fields' })
       return
@@ -53,9 +55,11 @@ export default function Profile() {
       setPwMsg({ type: 'danger', text: 'Passwords do not match' })
       return
     }
+
     setSavingPw(true)
     const result = await changePassword({ currentPassword: pwData.currentPassword, newPassword: pwData.newPassword })
     setSavingPw(false)
+
     if (result.success) {
       setPwMsg({ type: 'success', text: 'Password changed successfully!' })
       setPwData({ currentPassword: '', newPassword: '', confirmNew: '' })
@@ -74,145 +78,105 @@ export default function Profile() {
   const avatarInitial = user.name?.charAt(0).toUpperCase() || '?'
 
   return (
-    <div className="profile-page">
-      <Container className="profile-container">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-        >
-          {/* Profile Header */}
-          <div className="profile-header">
-            <div className="profile-avatar">{avatarInitial}</div>
-            <div>
-              <h2 className="profile-name">{user.name}</h2>
-              <p className="profile-email">{user.email}</p>
-              <Badge bg={user.role === 'admin' ? 'danger' : 'success'} className="text-capitalize">
-                {user.role}
-              </Badge>
+    <section className="min-h-[calc(100vh-5rem)] bg-dark-50 px-4 py-12">
+      <div className="container-max max-w-3xl">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+          <div className="mb-6 flex flex-wrap items-center gap-4 rounded-2xl bg-gradient-to-r from-accent-500 to-accent-600 p-6 text-white shadow-lift">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-white/60 bg-white/20 text-2xl font-bold">
+              {avatarInitial}
             </div>
-            <button className="btn btn-outline-danger ms-auto profile-logout-btn" onClick={handleLogout}>
+            <div>
+              <h1 className="text-2xl font-bold">{user.name}</h1>
+              <p className="text-sm text-white/90">{user.email}</p>
+              <span className="mt-1 inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-semibold capitalize">{user.role}</span>
+            </div>
+            <button type="button" className="ml-auto rounded-lg border border-white/60 px-4 py-2 text-sm font-semibold hover:bg-white/10" onClick={handleLogout}>
               Sign Out
             </button>
           </div>
 
-          {/* Tabs */}
-          <Tab.Container defaultActiveKey="profile">
-            <Nav variant="tabs" className="profile-tabs">
-              <Nav.Item>
-                <Nav.Link eventKey="profile">Profile Info</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="security">Security</Nav.Link>
-              </Nav.Item>
-            </Nav>
+          <div className="rounded-2xl border border-dark-100 bg-white p-6 shadow-soft">
+            <div className="mb-6 flex gap-2 border-b border-dark-200 pb-3">
+              <button type="button" onClick={() => setActiveTab('profile')} className={`rounded-lg px-4 py-2 text-sm font-semibold ${activeTab === 'profile' ? 'bg-accent-500 text-white' : 'bg-dark-100 text-dark-700 hover:bg-dark-200'}`}>
+                Profile Info
+              </button>
+              <button type="button" onClick={() => setActiveTab('security')} className={`rounded-lg px-4 py-2 text-sm font-semibold ${activeTab === 'security' ? 'bg-accent-500 text-white' : 'bg-dark-100 text-dark-700 hover:bg-dark-200'}`}>
+                Security
+              </button>
+            </div>
 
-            <Tab.Content className="profile-tab-content">
-              {/* Profile Info Tab */}
-              <Tab.Pane eventKey="profile">
+            {activeTab === 'profile' && (
+              <form onSubmit={handleProfileSave} className="space-y-4">
                 {profileMsg && (
-                  <Alert variant={profileMsg.type} dismissible onClose={() => setProfileMsg(null)}>
+                  <div className={`rounded-lg border px-4 py-3 text-sm ${profileMsg.type === 'success' ? 'border-green-200 bg-green-50 text-green-700' : 'border-red-200 bg-red-50 text-red-700'}`}>
                     {profileMsg.text}
-                  </Alert>
+                  </div>
                 )}
-                <Form onSubmit={handleProfileSave}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Full Name</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="name"
-                      value={profileData.name}
-                      onChange={handleProfileChange}
-                      className="auth-input"
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" value={user.email} disabled className="auth-input" />
-                    <Form.Text className="text-muted">Email cannot be changed.</Form.Text>
-                  </Form.Group>
-                  <Form.Group className="mb-4">
-                    <Form.Label>Phone Number</Form.Label>
-                    <Form.Control
-                      type="tel"
-                      name="phone"
-                      value={profileData.phone}
-                      onChange={handleProfileChange}
-                      placeholder="+234 000 000 0000"
-                      className="auth-input"
-                    />
-                  </Form.Group>
-                  <Button type="submit" className="auth-btn" disabled={savingProfile}>
-                    {savingProfile ? <><Spinner size="sm" className="me-2" />Saving...</> : 'Save Changes'}
-                  </Button>
-                </Form>
-              </Tab.Pane>
 
-              {/* Security Tab */}
-              <Tab.Pane eventKey="security">
+                <div>
+                  <label htmlFor="name" className="mb-2 block text-sm font-semibold text-dark-800">Full Name</label>
+                  <input id="name" name="name" value={profileData.name} onChange={handleProfileChange} className="w-full rounded-lg border-2 border-dark-200 px-4 py-3 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" />
+                </div>
+
+                <div>
+                  <label htmlFor="email" className="mb-2 block text-sm font-semibold text-dark-800">Email</label>
+                  <input id="email" type="email" value={user.email} disabled className="w-full rounded-lg border-2 border-dark-200 bg-dark-100 px-4 py-3 text-dark-500" />
+                  <p className="mt-1 text-xs text-dark-500">Email cannot be changed.</p>
+                </div>
+
+                <div>
+                  <label htmlFor="phone" className="mb-2 block text-sm font-semibold text-dark-800">Phone Number</label>
+                  <input id="phone" type="tel" name="phone" value={profileData.phone} onChange={handleProfileChange} placeholder="+234 000 000 0000" className="w-full rounded-lg border-2 border-dark-200 px-4 py-3 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" />
+                </div>
+
+                <button type="submit" className="btn-primary" disabled={savingProfile}>
+                  {savingProfile ? 'Saving...' : 'Save Changes'}
+                </button>
+              </form>
+            )}
+
+            {activeTab === 'security' && (
+              <form onSubmit={handlePwSave} className="space-y-4">
                 {pwMsg && (
-                  <Alert variant={pwMsg.type} dismissible onClose={() => setPwMsg(null)}>
+                  <div className={`rounded-lg border px-4 py-3 text-sm ${pwMsg.type === 'success' ? 'border-green-200 bg-green-50 text-green-700' : 'border-red-200 bg-red-50 text-red-700'}`}>
                     {pwMsg.text}
-                  </Alert>
+                  </div>
                 )}
-                <Form onSubmit={handlePwSave}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Current Password</Form.Label>
-                    <div className="password-wrapper">
-                      <Form.Control
-                        type={showCurrent ? 'text' : 'password'}
-                        name="currentPassword"
-                        value={pwData.currentPassword}
-                        onChange={handlePwChange}
-                        className="auth-input"
-                        autoComplete="current-password"
-                      />
-                      <button type="button" className="password-toggle" onClick={() => setShowCurrent((v) => !v)}>
-                        {showCurrent ? '🙈' : '👁️'}
-                      </button>
-                    </div>
-                  </Form.Group>
-                  <Form.Group className="mb-3">
-                    <Form.Label>New Password</Form.Label>
-                    <div className="password-wrapper">
-                      <Form.Control
-                        type={showNew ? 'text' : 'password'}
-                        name="newPassword"
-                        value={pwData.newPassword}
-                        onChange={handlePwChange}
-                        className="auth-input"
-                        placeholder="Min. 6 characters"
-                        autoComplete="new-password"
-                      />
-                      <button type="button" className="password-toggle" onClick={() => setShowNew((v) => !v)}>
-                        {showNew ? '🙈' : '👁️'}
-                      </button>
-                    </div>
-                  </Form.Group>
-                  <Form.Group className="mb-4">
-                    <Form.Label>Confirm New Password</Form.Label>
-                    <Form.Control
-                      type="password"
-                      name="confirmNew"
-                      value={pwData.confirmNew}
-                      onChange={handlePwChange}
-                      className="auth-input"
-                      placeholder="Repeat new password"
-                      autoComplete="new-password"
-                    />
-                    {pwData.confirmNew && pwData.newPassword !== pwData.confirmNew && (
-                      <small className="text-danger">Passwords do not match</small>
-                    )}
-                  </Form.Group>
-                  <Button type="submit" className="auth-btn" disabled={savingPw}>
-                    {savingPw ? <><Spinner size="sm" className="me-2" />Updating...</> : 'Update Password'}
-                  </Button>
-                </Form>
-              </Tab.Pane>
-            </Tab.Content>
-          </Tab.Container>
+
+                <div>
+                  <label htmlFor="currentPassword" className="mb-2 block text-sm font-semibold text-dark-800">Current Password</label>
+                  <div className="relative">
+                    <input id="currentPassword" type={showCurrent ? 'text' : 'password'} name="currentPassword" value={pwData.currentPassword} onChange={handlePwChange} autoComplete="current-password" className="w-full rounded-lg border-2 border-dark-200 px-4 py-3 pr-12 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" />
+                    <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2" onClick={() => setShowCurrent((v) => !v)}>
+                      {showCurrent ? '🙈' : '👁️'}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="newPassword" className="mb-2 block text-sm font-semibold text-dark-800">New Password</label>
+                  <div className="relative">
+                    <input id="newPassword" type={showNew ? 'text' : 'password'} name="newPassword" value={pwData.newPassword} onChange={handlePwChange} placeholder="Min. 6 characters" autoComplete="new-password" className="w-full rounded-lg border-2 border-dark-200 px-4 py-3 pr-12 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" />
+                    <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2" onClick={() => setShowNew((v) => !v)}>
+                      {showNew ? '🙈' : '👁️'}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="confirmNew" className="mb-2 block text-sm font-semibold text-dark-800">Confirm New Password</label>
+                  <input id="confirmNew" type="password" name="confirmNew" value={pwData.confirmNew} onChange={handlePwChange} placeholder="Repeat new password" autoComplete="new-password" className="w-full rounded-lg border-2 border-dark-200 px-4 py-3 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" />
+                  {pwData.confirmNew && pwData.newPassword !== pwData.confirmNew && <p className="mt-1 text-xs text-red-600">Passwords do not match</p>}
+                </div>
+
+                <button type="submit" className="btn-primary" disabled={savingPw}>
+                  {savingPw ? 'Updating...' : 'Update Password'}
+                </button>
+              </form>
+            )}
+          </div>
         </motion.div>
-      </Container>
-    </div>
+      </div>
+    </section>
   )
 }

@@ -11,28 +11,26 @@ export function AuthProvider({ children }) {
       return null
     }
   })
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(() => !!localStorage.getItem('akpu-token'))
   const [authError, setAuthError] = useState(null)
 
   // Verify token on mount
   useEffect(() => {
     const token = localStorage.getItem('akpu-token')
-    if (token) {
-      authAPI
-        .getMe()
-        .then((res) => {
-          setUser(res.data.user)
-          localStorage.setItem('akpu-user', JSON.stringify(res.data.user))
-        })
-        .catch(() => {
-          localStorage.removeItem('akpu-token')
-          localStorage.removeItem('akpu-user')
-          setUser(null)
-        })
-        .finally(() => setLoading(false))
-    } else {
-      setLoading(false)
-    }
+    if (!token) return
+
+    authAPI
+      .getMe()
+      .then((res) => {
+        setUser(res.data.user)
+        localStorage.setItem('akpu-user', JSON.stringify(res.data.user))
+      })
+      .catch(() => {
+        localStorage.removeItem('akpu-token')
+        localStorage.removeItem('akpu-user')
+        setUser(null)
+      })
+      .finally(() => setLoading(false))
   }, [])
 
   const register = useCallback(async ({ name, email, password, phone }) => {

@@ -1,5 +1,4 @@
 import { Navigate, useLocation } from 'react-router-dom'
-import { Spinner } from 'react-bootstrap'
 import { useAuth } from '../hooks/useAuth'
 
 // Redirect logged-in users away from login/register pages
@@ -9,8 +8,8 @@ export function GuestRoute({ children }) {
 
   if (loading) {
     return (
-      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
-        <Spinner animation="border" style={{ color: '#ff6b35' }} />
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-accent-200 border-t-accent-500" />
       </div>
     )
   }
@@ -29,8 +28,8 @@ export function ProtectedRoute({ children }) {
 
   if (loading) {
     return (
-      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
-        <Spinner animation="border" style={{ color: '#ff6b35' }} />
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-accent-200 border-t-accent-500" />
       </div>
     )
   }

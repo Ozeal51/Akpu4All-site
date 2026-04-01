@@ -1,6 +1,5 @@
 import { useContext } from 'react'
 import { CartContext } from '../context/cart'
-import { Row, Col, Button, Card } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 
@@ -9,51 +8,53 @@ export default function Cart() {
 
   if (items.length === 0) {
     return (
-      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
-        <h1 className="mb-3">Your Cart</h1>
-        <p>Your cart is empty.</p>
-        <Button as={Link} to="/meals">Browse Meals</Button>
-      </motion.div>
+      <motion.section initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }} className="section-padding bg-dark-50">
+        <div className="container-max text-center">
+          <h1 className="text-4xl font-display font-bold text-dark-900">Your Cart</h1>
+          <p className="mt-3 text-dark-600">Your cart is empty.</p>
+          <Link to="/meals" className="btn-primary mt-6 inline-block">Browse Meals</Link>
+        </div>
+      </motion.section>
     )
   }
 
   return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
-      <h1 className="mb-3">Your Cart</h1>
-      <Row className="g-3">
-        <Col md={8}>
-          {items.map((i) => (
-            <Card key={i.id} className="mb-3">
-              <Card.Body className="d-flex align-items-center gap-3">
-                <img src={i.image} alt={i.name} width={80} height={80} style={{ objectFit: 'cover', borderRadius: 8 }} />
-                <div className="flex-grow-1">
-                  <div className="fw-bold">{i.name}</div>
-                  <div className="text-muted">₦{i.price.toFixed(2)} x {i.qty}</div>
+    <motion.section initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }} className="section-padding bg-dark-50">
+      <div className="container-max">
+        <h1 className="mb-6 text-4xl font-display font-bold text-dark-900">Your Cart</h1>
+
+        <div className="grid gap-6 lg:grid-cols-3">
+          <div className="space-y-4 lg:col-span-2">
+            {items.map((i) => (
+              <article key={i.id} className="card p-4">
+                <div className="flex flex-wrap items-center gap-4">
+                  <img src={i.image} alt={i.name} className="h-20 w-20 rounded-lg object-cover" />
+                  <div className="min-w-[180px] flex-1">
+                    <h3 className="font-semibold text-dark-900">{i.name}</h3>
+                    <p className="text-sm text-dark-600">₦{i.price.toFixed(2)} x {i.qty}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button type="button" className="rounded-lg border border-dark-300 px-3 py-1 hover:bg-dark-100" onClick={() => removeItem(i.id)}>-</button>
+                    <button type="button" className="rounded-lg border border-dark-300 px-3 py-1 hover:bg-dark-100" onClick={() => addItem(i)}>+</button>
+                    <button type="button" className="rounded-lg border border-red-300 px-3 py-1 text-red-600 hover:bg-red-50" onClick={() => deleteItem(i.id)}>Remove</button>
+                  </div>
                 </div>
-                <div className="d-flex align-items-center gap-2">
-                  <Button size="sm" variant="outline-secondary" onClick={() => removeItem(i.id)}>-</Button>
-                  <Button size="sm" variant="outline-secondary" onClick={() => addItem(i)}>+</Button>
-                  <Button size="sm" variant="outline-danger" onClick={() => deleteItem(i.id)}>Remove</Button>
-                </div>
-              </Card.Body>
-            </Card>
-          ))}
-        </Col>
-        <Col md={4}>
-          <Card>
-            <Card.Body>
-              <div className="d-flex justify-content-between mb-3">
-                <span className="fw-bold">Total</span>
-                <span className="fw-bold">₦{totalPrice.toFixed(2)}</span>
-              </div>
-              <div className="d-grid gap-2">
-                <Button as={Link} to="/checkout" variant="primary">Proceed to Checkout</Button>
-                <Button variant="outline-danger" onClick={clearCart}>Clear Cart</Button>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </motion.div>
+              </article>
+            ))}
+          </div>
+
+          <aside className="card h-fit p-5">
+            <div className="mb-4 flex items-center justify-between">
+              <span className="font-semibold text-dark-900">Total</span>
+              <span className="text-xl font-bold text-accent-600">₦{totalPrice.toFixed(2)}</span>
+            </div>
+            <div className="space-y-3">
+              <Link to="/checkout" className="btn-primary block w-full text-center">Proceed to Checkout</Link>
+              <button type="button" className="w-full rounded-lg border border-red-300 px-4 py-3 font-semibold text-red-600 hover:bg-red-50" onClick={clearCart}>Clear Cart</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </motion.section>
   )
 }

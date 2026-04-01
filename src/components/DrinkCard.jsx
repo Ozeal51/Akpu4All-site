@@ -1,4 +1,3 @@
-import { Card, Button } from 'react-bootstrap'
 import { useContext } from 'react'
 import { CartContext } from '../context/cart'
 import { motion } from 'framer-motion'
@@ -7,18 +6,22 @@ export default function DrinkCard({ drink }) {
   const { addItem } = useContext(CartContext)
   return (
     <motion.div whileHover={{ y: -4 }} transition={{ type: 'spring', stiffness: 260, damping: 20 }}>
-      <Card className="h-100 shadow-sm">
-        <Card.Img variant="top" src={drink.image} alt={drink.name} style={{ objectFit: 'cover', height: 180 }} />
-        <Card.Body className="d-flex flex-column">
-          <Card.Title>{drink.name}</Card.Title>
-          <div className="mt-auto d-flex justify-content-between align-items-center">
-            <span className="fw-bold">₦{drink.price.toFixed(2)}</span>
-            <Button variant="primary" onClick={() => addItem({ id: drink.id, name: drink.name, price: drink.price, image: drink.image })}>
+      <div className="card h-full overflow-hidden">
+        <img src={drink.image} alt={drink.name} className="h-44 w-full object-cover" />
+        <div className="flex h-full flex-col p-4">
+          <h3 className="text-lg font-semibold text-dark-900">{drink.name}</h3>
+          <div className="mt-4 flex items-center justify-between">
+            <span className="text-lg font-bold text-accent-600">₦{drink.price.toFixed(2)}</span>
+            <button
+              type="button"
+              className="btn-primary"
+              onClick={() => addItem({ id: drink.id, name: drink.name, price: drink.price, image: drink.image })}
+            >
               Add to Cart
-            </Button>
+            </button>
           </div>
-        </Card.Body>
-      </Card>
+        </div>
+      </div>
     </motion.div>
   )
 }

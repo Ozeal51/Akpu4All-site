@@ -1,6 +1,5 @@
-import { Container } from 'react-bootstrap'
 import { Routes, Route } from 'react-router-dom'
-import Header from './components/Header.jsx'
+import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import Home from './pages/Home.jsx'
 import Meals from './pages/Meals.jsx'
@@ -13,15 +12,14 @@ import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
 import Profile from './pages/Profile.jsx'
 import { ProtectedRoute, GuestRoute } from './components/ProtectedRoute.jsx'
-import './App.css'
 
 export default function App() {
   return (
     <>
-      <Header />
-      <main style={{ paddingTop: '4.5rem' }}>
+      <Navbar />
+      <main className="pt-20 min-h-screen">
         <Routes>
-          {/* Full-page auth routes (no inner Container) */}
+          {/* Full-page routes (auth pages) */}
           <Route
             path="/login"
             element={
@@ -47,28 +45,19 @@ export default function App() {
             }
           />
 
-          {/* Standard routes with Container */}
+          {/* Standard routes with consistent padding */}
+          <Route path="/" element={<Home />} />
+          <Route path="/meals" element={<Meals />} />
+          <Route path="/drinks" element={<Drinks />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/cart" element={<Cart />} />
           <Route
-            path="/*"
+            path="/checkout"
             element={
-              <Container className="py-4">
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/meals" element={<Meals />} />
-                  <Route path="/drinks" element={<Drinks />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route
-                    path="/checkout"
-                    element={
-                      <ProtectedRoute>
-                        <Checkout />
-                      </ProtectedRoute>
-                    }
-                  />
-                </Routes>
-              </Container>
+              <ProtectedRoute>
+                <Checkout />
+              </ProtectedRoute>
             }
           />
         </Routes>
