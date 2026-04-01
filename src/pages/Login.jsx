@@ -74,7 +74,7 @@ export default function Login() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="you@example.com"
+                placeholder="Your Email"
                 className="auth-input"
                 autoComplete="email"
                 required

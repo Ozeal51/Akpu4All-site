@@ -5,11 +5,11 @@ export default function About() {
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
       <h1 className="mb-3">About Akpu4All</h1>
       <p>
-        Akpu4All is a modern Nigerian restaurant dedicated to serving authentic, flavorful meals and drinks. Our mission is
+        Akpu4All is a modern Nigerian restaurant Created by Hosea and dedicated to serving authentic, flavorful swallows and drinks. Our mission is
         to bring comfort food to your doorstep with an exceptional online ordering experience.
       </p>
       <p>
-        Our team blends tradition with innovation, ensuring every dish is crafted with care. From classic akpu and soups to
+        Our meals blends tradition with innovation, ensuring every dish is crafted with care. From classic akpu and soups to
         grilled specials and refreshing drinks, we celebrate the rich culinary heritage of Nigeria.
       </p>
     </motion.div>
