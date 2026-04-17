@@ -83,17 +83,18 @@ export default function Register() {
           : 'bg-green-500'
 
   return (
-    <section className="min-h-[calc(100vh-5rem)] bg-gradient-to-br from-primary-50 via-white to-accent-50 px-4 py-12">
+    <section className="min-h-[calc(100vh-5rem)] bg-primary-50 px-4 py-12">
       <div className="container-max flex justify-center">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35 }}
-          className="w-full max-w-lg rounded-2xl border border-dark-100 bg-white p-8 shadow-lift"
+          className="w-full max-w-lg rounded-[2rem] border border-dark-100 bg-white p-8 shadow-soft"
         >
           <div className="mb-6 text-center">
-            <h1 className="text-3xl font-display font-bold gradient-text">Akpu4All</h1>
-            <p className="mt-2 text-sm text-dark-600">Create your account to get started</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-dark-500">Create account</p>
+            <h1 className="mt-2 text-3xl font-display font-bold text-dark-900">Join Akpu4All</h1>
+            <p className="mt-2 text-sm text-dark-600">Create your account to start ordering delicious meals.</p>
           </div>
 
           {error && (
@@ -117,23 +118,23 @@ export default function Register() {
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <div>
               <label htmlFor="name" className="mb-2 block text-sm font-semibold text-dark-800">Full Name <span className="text-red-500">*</span></label>
-              <input id="name" type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Your Full Name" className="w-full rounded-lg border-2 border-dark-200 px-4 py-3 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" autoComplete="name" required />
+              <input id="name" type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Your Full Name" className="w-full rounded-full border-2 border-dark-200 px-4 py-3 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" autoComplete="name" required />
             </div>
 
             <div>
               <label htmlFor="email" className="mb-2 block text-sm font-semibold text-dark-800">Email Address <span className="text-red-500">*</span></label>
-              <input id="email" type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Your Email" className="w-full rounded-lg border-2 border-dark-200 px-4 py-3 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" autoComplete="email" required />
+              <input id="email" type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Your Email" className="w-full rounded-full border-2 border-dark-200 px-4 py-3 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" autoComplete="email" required />
             </div>
 
             <div>
               <label htmlFor="phone" className="mb-2 block text-sm font-semibold text-dark-800">Phone Number <span className="text-dark-500">(optional)</span></label>
-              <input id="phone" type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="+234 000 000 0000" className="w-full rounded-lg border-2 border-dark-200 px-4 py-3 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" autoComplete="tel" />
+              <input id="phone" type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="+234 000 000 0000" className="w-full rounded-full border-2 border-dark-200 px-4 py-3 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" autoComplete="tel" />
             </div>
 
             <div>
               <label htmlFor="password" className="mb-2 block text-sm font-semibold text-dark-800">Password <span className="text-red-500">*</span></label>
               <div className="relative">
-                <input id="password" type={showPassword ? 'text' : 'password'} name="password" value={formData.password} onChange={handleChange} placeholder="Min. 6 characters" className="w-full rounded-lg border-2 border-dark-200 px-4 py-3 pr-12 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" autoComplete="new-password" required />
+                <input id="password" type={showPassword ? 'text' : 'password'} name="password" value={formData.password} onChange={handleChange} placeholder="Min. 6 characters" className="w-full rounded-full border-2 border-dark-200 px-4 py-3 pr-12 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" autoComplete="new-password" required />
                 <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2" onClick={() => setShowPassword((v) => !v)} aria-label="Toggle password visibility">
                   {showPassword ? '🙈' : '👁️'}
                 </button>
@@ -152,7 +153,7 @@ export default function Register() {
             <div>
               <label htmlFor="confirm" className="mb-2 block text-sm font-semibold text-dark-800">Confirm Password <span className="text-red-500">*</span></label>
               <div className="relative">
-                <input id="confirm" type={showConfirm ? 'text' : 'password'} name="confirm" value={formData.confirm} onChange={handleChange} placeholder="Repeat your password" className="w-full rounded-lg border-2 border-dark-200 px-4 py-3 pr-12 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" autoComplete="new-password" required />
+                <input id="confirm" type={showConfirm ? 'text' : 'password'} name="confirm" value={formData.confirm} onChange={handleChange} placeholder="Repeat your password" className="w-full rounded-full border-2 border-dark-200 px-4 py-3 pr-12 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" autoComplete="new-password" required />
                 <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2" onClick={() => setShowConfirm((v) => !v)} aria-label="Toggle confirm password visibility">
                   {showConfirm ? '🙈' : '👁️'}
                 </button>

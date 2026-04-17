@@ -78,10 +78,10 @@ export default function Profile() {
   const avatarInitial = user.name?.charAt(0).toUpperCase() || '?'
 
   return (
-    <section className="min-h-[calc(100vh-5rem)] bg-dark-50 px-4 py-12">
+    <section className="min-h-[calc(100vh-5rem)] bg-primary-50 px-4 py-12">
       <div className="container-max max-w-3xl">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-          <div className="mb-6 flex flex-wrap items-center gap-4 rounded-2xl bg-gradient-to-r from-accent-500 to-accent-600 p-6 text-white shadow-lift">
+          <div className="mb-6 flex flex-wrap items-center gap-4 rounded-[2rem] bg-dark-900 p-6 text-white shadow-soft">
             <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-white/60 bg-white/20 text-2xl font-bold">
               {avatarInitial}
             </div>
@@ -90,17 +90,17 @@ export default function Profile() {
               <p className="text-sm text-white/90">{user.email}</p>
               <span className="mt-1 inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-semibold capitalize">{user.role}</span>
             </div>
-            <button type="button" className="ml-auto rounded-lg border border-white/60 px-4 py-2 text-sm font-semibold hover:bg-white/10" onClick={handleLogout}>
+            <button type="button" className="ml-auto rounded-full border border-white/60 px-4 py-2 text-sm font-semibold hover:bg-white/10" onClick={handleLogout}>
               Sign Out
             </button>
           </div>
 
-          <div className="rounded-2xl border border-dark-100 bg-white p-6 shadow-soft">
+          <div className="rounded-[2rem] border border-dark-100 bg-white p-6 shadow-soft">
             <div className="mb-6 flex gap-2 border-b border-dark-200 pb-3">
-              <button type="button" onClick={() => setActiveTab('profile')} className={`rounded-lg px-4 py-2 text-sm font-semibold ${activeTab === 'profile' ? 'bg-accent-500 text-white' : 'bg-dark-100 text-dark-700 hover:bg-dark-200'}`}>
+              <button type="button" onClick={() => setActiveTab('profile')} className={`rounded-full px-4 py-2 text-sm font-semibold ${activeTab === 'profile' ? 'bg-dark-900 text-white' : 'bg-dark-100 text-dark-700 hover:bg-dark-200'}`}>
                 Profile Info
               </button>
-              <button type="button" onClick={() => setActiveTab('security')} className={`rounded-lg px-4 py-2 text-sm font-semibold ${activeTab === 'security' ? 'bg-accent-500 text-white' : 'bg-dark-100 text-dark-700 hover:bg-dark-200'}`}>
+              <button type="button" onClick={() => setActiveTab('security')} className={`rounded-full px-4 py-2 text-sm font-semibold ${activeTab === 'security' ? 'bg-dark-900 text-white' : 'bg-dark-100 text-dark-700 hover:bg-dark-200'}`}>
                 Security
               </button>
             </div>
@@ -115,18 +115,18 @@ export default function Profile() {
 
                 <div>
                   <label htmlFor="name" className="mb-2 block text-sm font-semibold text-dark-800">Full Name</label>
-                  <input id="name" name="name" value={profileData.name} onChange={handleProfileChange} className="w-full rounded-lg border-2 border-dark-200 px-4 py-3 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" />
+                  <input id="name" name="name" value={profileData.name} onChange={handleProfileChange} className="w-full rounded-full border-2 border-dark-200 px-4 py-3 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" />
                 </div>
 
                 <div>
                   <label htmlFor="email" className="mb-2 block text-sm font-semibold text-dark-800">Email</label>
-                  <input id="email" type="email" value={user.email} disabled className="w-full rounded-lg border-2 border-dark-200 bg-dark-100 px-4 py-3 text-dark-500" />
+                  <input id="email" type="email" value={user.email} disabled className="w-full rounded-full border-2 border-dark-200 bg-dark-100 px-4 py-3 text-dark-500" />
                   <p className="mt-1 text-xs text-dark-500">Email cannot be changed.</p>
                 </div>
 
                 <div>
                   <label htmlFor="phone" className="mb-2 block text-sm font-semibold text-dark-800">Phone Number</label>
-                  <input id="phone" type="tel" name="phone" value={profileData.phone} onChange={handleProfileChange} placeholder="+234 000 000 0000" className="w-full rounded-lg border-2 border-dark-200 px-4 py-3 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" />
+                  <input id="phone" type="tel" name="phone" value={profileData.phone} onChange={handleProfileChange} placeholder="+234 000 000 0000" className="w-full rounded-full border-2 border-dark-200 px-4 py-3 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" />
                 </div>
 
                 <button type="submit" className="btn-primary" disabled={savingProfile}>

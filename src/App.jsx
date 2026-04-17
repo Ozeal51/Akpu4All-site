@@ -15,9 +15,9 @@ import { ProtectedRoute, GuestRoute } from './components/ProtectedRoute.jsx'
 
 export default function App() {
   return (
-    <>
+    <div className="min-h-screen bg-white text-dark-800">
       <Navbar />
-      <main className="pt-20 min-h-screen">
+      <main className="min-h-screen pt-20">
         <Routes>
           {/* Full-page routes (auth pages) */}
           <Route
@@ -63,6 +63,6 @@ export default function App() {
         </Routes>
       </main>
       <Footer />
-    </>
+    </div>
   )
 }

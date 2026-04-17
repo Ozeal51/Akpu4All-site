@@ -44,17 +44,18 @@ export default function Login() {
   const error = localError || authError
 
   return (
-    <section className="min-h-[calc(100vh-5rem)] bg-gradient-to-br from-primary-50 via-white to-accent-50 px-4 py-12">
+    <section className="min-h-[calc(100vh-5rem)] bg-primary-50 px-4 py-12">
       <div className="container-max flex justify-center">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35 }}
-          className="w-full max-w-md rounded-2xl border border-dark-100 bg-white p-8 shadow-lift"
+          className="w-full max-w-md rounded-[2rem] border border-dark-100 bg-white p-8 shadow-soft"
         >
           <div className="mb-6 text-center">
-            <h1 className="text-3xl font-display font-bold gradient-text">Akpu4All</h1>
-            <p className="mt-2 text-sm text-dark-600">Welcome back! Sign in to your account</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-dark-500">Welcome back</p>
+            <h1 className="mt-2 text-3xl font-display font-bold text-dark-900">Sign in</h1>
+            <p className="mt-2 text-sm text-dark-600">Continue to your account and complete your next food order.</p>
           </div>
 
           {error && (
@@ -85,7 +86,7 @@ export default function Login() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Your Email"
-                className="w-full rounded-lg border-2 border-dark-200 px-4 py-3 focus:border-accent-500 focus:ring-2 focus:ring-accent-100"
+                className="w-full rounded-full border-2 border-dark-200 px-4 py-3 focus:border-accent-500 focus:ring-2 focus:ring-accent-100"
                 autoComplete="email"
                 required
               />
@@ -101,7 +102,7 @@ export default function Login() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Enter your password"
-                  className="w-full rounded-lg border-2 border-dark-200 px-4 py-3 pr-12 focus:border-accent-500 focus:ring-2 focus:ring-accent-100"
+                  className="w-full rounded-full border-2 border-dark-200 px-4 py-3 pr-12 focus:border-accent-500 focus:ring-2 focus:ring-accent-100"
                   autoComplete="current-password"
                   required
                 />

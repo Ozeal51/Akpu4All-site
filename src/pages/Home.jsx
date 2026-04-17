@@ -7,6 +7,7 @@ import { meals } from '../data/meals.js'
 
 export default function Home() {
   const featured = meals.slice(0, 6)
+  const spotlight = meals.slice(0, 3)
 
   return (
     <>
@@ -15,6 +16,38 @@ export default function Home() {
 
       {/* Features Section */}
       <Features />
+
+      {/* Spotlight Categories */}
+      <section className="section-padding bg-primary-50">
+        <div className="container-max">
+          <div className="mb-10 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-dark-500">Meal Spotlight</p>
+              <h2 className="font-display text-3xl font-bold text-dark-900 md:text-4xl">
+                Freshly prepared, flavor first
+              </h2>
+            </div>
+            <Link to="/meals" className="text-sm font-semibold uppercase tracking-wide text-dark-700 hover:text-dark-900">
+              See full menu →
+            </Link>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            {spotlight.map((item) => (
+              <article key={item.id} className="card overflow-hidden">
+                <div className="h-56 overflow-hidden">
+                  <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+                </div>
+                <div className="space-y-3 p-5">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-dark-500">{item.category}</p>
+                  <h3 className="text-lg font-semibold text-dark-900">{item.name}</h3>
+                  <p className="line-clamp-2 text-sm text-dark-600">{item.description}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Best Sellers Section */}
       <section className="section-padding bg-white">
@@ -25,18 +58,18 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-16 max-w-2xl mx-auto"
+            className="mx-auto mb-12 max-w-2xl text-center"
           >
-            <h2 className="font-display font-bold text-4xl md:text-5xl mb-4 text-dark-900">
-              Our <span className="gradient-text">Best Sellers</span>
+            <h2 className="mb-4 font-display text-3xl font-bold text-dark-900 md:text-5xl">
+              Best Sellers
             </h2>
-            <p className="text-lg text-dark-600">
-              Discover the most loved meals from our authentic Nigerian menu
+            <p className="text-sm text-dark-600 sm:text-base md:text-lg">
+              Discover customer-favorite meals and drinks from our current menu data.
             </p>
           </motion.div>
 
-          {/* Products Grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
+          {/* Meals Grid */}
+          <div className="mb-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-6">
             {featured.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -50,9 +83,9 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center"
           >
-            <Link to="/meals" className="btn-primary text-lg inline-block group">
+            <Link to="/meals" className="btn-primary group inline-block text-sm sm:text-base">
               <span className="flex items-center gap-2">
-                View All Meals
+                View Full Menu
                 <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
@@ -63,17 +96,17 @@ export default function Home() {
       </section>
 
       {/* Social Proof Section */}
-      <section className="section-padding bg-gradient-to-r from-primary-50 to-accent-50">
+      <section className="section-padding bg-white">
         <div className="container-max">
-          <div className="grid sm:grid-cols-3 gap-8 text-center">
+          <div className="grid gap-4 text-center sm:grid-cols-3 sm:gap-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <p className="text-5xl md:text-6xl font-bold gradient-text mb-2">5000+</p>
-              <p className="text-lg text-dark-600">Happy Customers</p>
+              <p className="mb-2 text-4xl font-bold text-dark-900 md:text-5xl">5000+</p>
+              <p className="text-sm uppercase tracking-wide text-dark-600">Happy Customers</p>
             </motion.div>
 
             <motion.div
@@ -82,8 +115,8 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
             >
-              <p className="text-5xl md:text-6xl font-bold gradient-text mb-2">4.9/5</p>
-              <p className="text-lg text-dark-600">Customer Rating</p>
+              <p className="mb-2 text-4xl font-bold text-dark-900 md:text-5xl">4.9/5</p>
+              <p className="text-sm uppercase tracking-wide text-dark-600">Customer Rating</p>
             </motion.div>
 
             <motion.div
@@ -92,8 +125,8 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              <p className="text-5xl md:text-6xl font-bold gradient-text mb-2">30 min</p>
-              <p className="text-lg text-dark-600">Average Delivery Time</p>
+              <p className="mb-2 text-4xl font-bold text-dark-900 md:text-5xl">30 min</p>
+              <p className="text-sm uppercase tracking-wide text-dark-600">Average Delivery Time</p>
             </motion.div>
           </div>
         </div>
@@ -110,16 +143,16 @@ export default function Home() {
             className="space-y-8"
           >
             <div className="space-y-4">
-              <h2 className="text-4xl md:text-5xl font-display font-bold">
-                Ready to Order?
+              <h2 className="font-display text-3xl font-bold md:text-5xl">
+                Ready to place your next order?
               </h2>
-              <p className="text-xl text-dark-300 max-w-2xl mx-auto">
-                Experience authentic Nigerian cuisine prepared fresh and delivered hot to your door.
+              <p className="mx-auto max-w-2xl text-sm text-dark-300 sm:text-base md:text-xl">
+                Browse meals, add your favorites, and checkout in minutes with Akpu4All.
               </p>
             </div>
 
-            <Link to="/meals" className="btn-primary text-lg inline-block group hover:scale-105 transition-transform">
-              Order Now
+            <Link to="/meals" className="inline-block rounded-full bg-white px-6 py-3 text-sm font-semibold text-dark-900 transition-transform hover:scale-[1.02]">
+              Start Ordering
             </Link>
           </motion.div>
         </div>

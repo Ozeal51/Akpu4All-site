@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { meals } from '../data/meals.js'
 
 export default function Hero() {
+  const featuredItems = meals.slice(0, 3)
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -23,43 +26,39 @@ export default function Hero() {
   }
 
   return (
-    <section className="relative min-h-screen pt-20 overflow-hidden">
-      {/* Background with gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-white to-accent-50"></div>
-
-      {/* Decorative elements */}
-      <div className="absolute top-20 right-0 w-96 h-96 bg-accent-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '2s' }}></div>
-
-      <div className="relative container-max px-4 h-full flex items-center py-20 md:py-32">
+    <section className="relative overflow-hidden bg-white pt-28 sm:pt-32">
+      <div className="absolute inset-x-0 top-0 -z-10 h-[32rem] bg-gradient-to-b from-primary-50 to-white" />
+      <div className="relative container-max flex h-full items-center px-4 pb-14 md:pb-20">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="w-full grid md:grid-cols-2 gap-12 items-center"
+          className="grid w-full items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]"
         >
           {/* Content */}
-          <motion.div variants={itemVariants} className="space-y-8">
+          <motion.div variants={itemVariants} className="space-y-7">
             <div className="space-y-4">
               <motion.div
                 variants={itemVariants}
                 className="badge-primary w-fit"
               >
-                🍲 Authentic Nigerian Cuisine
+                Fresh meals, Fast delivery
               </motion.div>
 
               <motion.h1
                 variants={itemVariants}
-                className="font-display font-bold text-5xl md:text-6xl leading-tight text-balance"
+                className="max-w-xl text-balance font-display text-4xl font-bold leading-tight text-dark-900 sm:text-5xl md:text-6xl"
               >
-                Fresh, Delicious Meals <span className="gradient-text">Delivered Fast</span>
+                Order your favorites Swallow
+                <br />
+                <span className="text-dark-500">from Akpu4All in minutes.</span>
               </motion.h1>
 
               <motion.p
                 variants={itemVariants}
-                className="text-lg text-dark-600 leading-relaxed text-balance max-w-xl"
+                className="max-w-xl text-balance text-sm leading-relaxed text-dark-600 sm:text-base md:text-lg"
               >
-                Experience the authentic taste of Nigeria. From Akpu to Jollof, every meal is prepared fresh with premium ingredients and delivered hot to your door.
+                Browse meals and drinks, add what you love to cart, and place your order.
               </motion.p>
             </div>
 
@@ -70,10 +69,10 @@ export default function Hero() {
             >
               <Link
                 to="/meals"
-                className="btn-primary text-center inline-block group"
+                className="btn-primary group inline-block text-center"
               >
                 <span className="flex items-center justify-center gap-2">
-                  Order Now
+                  Order Meals
                   <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
@@ -90,29 +89,26 @@ export default function Hero() {
             {/* Trust Signals */}
             <motion.div
               variants={itemVariants}
-              className="flex flex-wrap gap-6 pt-8"
+              className="grid grid-cols-2 gap-3 pt-2 sm:grid-cols-3"
             >
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-full bg-accent-100 text-accent-600 flex items-center justify-center font-bold">⭐</div>
+              <div className="rounded-2xl border border-dark-200 bg-white p-4 shadow-sm">
                 <div>
-                  <p className="font-semibold text-dark-900">4.9 Rating</p>
-                  <p className="text-sm text-dark-600">From 600+ reviews</p>
+                  <p className="text-lg font-semibold text-dark-900">4.9</p>
+                  <p className="text-[11px] uppercase tracking-[0.18em] text-dark-500">Average Food Rating</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-full bg-fresh-50 text-fresh-600 flex items-center justify-center font-bold">✓</div>
+              <div className="rounded-2xl border border-dark-200 bg-white p-4 shadow-sm">
                 <div>
-                  <p className="font-semibold text-dark-900">Fresh Daily</p>
-                  <p className="text-sm text-dark-600">Cooked to order</p>
+                  <p className="text-lg font-semibold text-dark-900">12+</p>
+                  <p className="text-[11px] uppercase tracking-[0.18em] text-dark-500">Meal & Drink Categories</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold">🚚</div>
+              <div className="rounded-2xl border border-dark-200 bg-white p-4 shadow-sm">
                 <div>
-                  <p className="font-semibold text-dark-900">Fast Delivery</p>
-                  <p className="text-sm text-dark-600">30 mins or less</p>
+                  <p className="text-lg font-semibold text-dark-900">24/7</p>
+                  <p className="text-[11px] uppercase tracking-[0.18em] text-dark-500">Ordering Access</p>
                 </div>
               </div>
             </motion.div>
@@ -121,49 +117,41 @@ export default function Hero() {
           {/* Hero Image */}
           <motion.div
             variants={itemVariants}
-            className="relative h-96 md:h-full flex items-center justify-center"
+            className="relative flex items-center justify-center"
           >
-            <div className="relative w-full h-full max-h-96 md:max-h-none">
-              {/* Image container with border */}
-              <div className="absolute inset-0 rounded-3xl overflow-hidden shadow-2xl">
+            <div className="relative w-full max-w-2xl">
+              <div className="overflow-hidden rounded-[2rem] border border-dark-200 bg-dark-100 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
                 <img
-                  src="https://media.istockphoto.com/id/1388097964/photo/egusi-ogbonno-vegetable-and-afang-soup-with-pounded-yam.jpg?s=612x612&w=0&k=20&c=jJVnUgfTPEsIDm1CF76ZLnt423-c88f-aPmGtLSxa0A="
-                  alt="Fresh Nigerian meals"
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  src={featuredItems[0]?.image}
+                  alt={featuredItems[0]?.name || 'Featured product'}
+                  className="h-[420px] w-full object-cover transition-transform duration-500 hover:scale-105 sm:h-[560px]"
                 />
               </div>
 
-              {/* Decorative frame */}
-              <div className="absolute -inset-4 rounded-3xl border-2 border-primary-300 opacity-50"></div>
-
-              {/* Floating badge */}
               <motion.div
-                animate={{ y: [0, -10, 0] }}
+                animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
-                className="absolute bottom-8 left-8 bg-white rounded-2xl shadow-xl p-4 backdrop-blur-lg"
+                className="absolute left-4 top-4 rounded-2xl border border-white/60 bg-white/95 p-4 shadow-lg backdrop-blur"
               >
-                <p className="font-bold text-accent-600 text-lg">Best Seller</p>
-                <p className="text-sm text-dark-600">Akpu with Egusi soup</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-dark-500">Featured category</p>
+                <p className="mt-1 text-base font-bold text-dark-900">Chef's Picks</p>
               </motion.div>
+
+              <div className="absolute bottom-4 right-4 grid gap-3 sm:grid-cols-2">
+                {featuredItems.slice(1).map((item) => (
+                  <div key={item.id} className="w-40 overflow-hidden rounded-2xl border border-white/70 bg-white shadow-md sm:w-44">
+                    <img src={item.image} alt={item.name} className="h-24 w-full object-cover" />
+                    <div className="p-3">
+                      <p className="text-[11px] uppercase tracking-[0.18em] text-dark-500">{item.category}</p>
+                      <p className="mt-1 line-clamp-1 text-sm font-semibold text-dark-900">{item.name}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </motion.div>
         </motion.div>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-      >
-        <div className="w-6 h-10 border-2 border-dark-400 rounded-full flex justify-center">
-          <motion.div
-            animate={{ y: [2, 6, 2] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-1 h-2 bg-dark-400 rounded-full mt-2"
-          ></motion.div>
-        </div>
-      </motion.div>
     </section>
   )
 }

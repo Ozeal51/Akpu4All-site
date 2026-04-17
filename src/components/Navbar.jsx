@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { motion } from 'framer-motion'
+import { CartContext } from '../context/cart'
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { isAuthenticated, user, logout } = useAuth()
+  const { cartCount } = useContext(CartContext)
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -23,48 +25,60 @@ export default function Navbar() {
   ]
 
   return (
-    <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-lg border-b border-dark-100 z-50 shadow-soft">
-      <div className="container-max px-4 py-4">
+    <nav className="fixed top-0 z-50 w-full border-b border-dark-200 bg-white/95 backdrop-blur-lg">
+      <div className="border-b border-dark-100 bg-primary-50/70 px-3 py-1 text-center text-[11px] font-medium uppercase tracking-wide text-dark-600 sm:text-xs">
+        Inspired by African Tradition • Perfected for everyday Swallow ordering
+      </div>
+
+      <div className="container-max px-3 py-3 sm:px-4 sm:py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link
             to="/"
-            className="font-display font-bold text-2xl gradient-text hover:text-primary-600 transition-colors"
+            className="font-display text-xl font-bold text-dark-900 transition-colors hover:text-dark-700 sm:text-2xl"
           >
             Akpu4All
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden items-center gap-7 md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 to={link.href}
-                className="text-dark-700 font-medium hover:text-accent-500 transition-colors relative group"
+                className="group relative text-sm font-semibold uppercase tracking-wide text-dark-700 transition-colors hover:text-dark-900"
               >
                 {link.label}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent-500 group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-dark-900 transition-all duration-300 group-hover:w-full"></span>
               </Link>
             ))}
           </div>
 
           {/* Right Section */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             {/* Cart */}
             <Link
               to="/cart"
-              className="relative p-2 text-dark-700 hover:text-accent-500 transition-colors"
-              aria-label="Shopping cart"
+              className="relative rounded-lg p-2 text-dark-700 hover:bg-dark-100 hover:text-accent-500 transition-colors"
+              aria-label="Order cart"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2m0 0L7 13h10l4-8H5.4z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 13l-1 5h12" />
+                <circle cx="9" cy="20" r="1" />
+                <circle cx="18" cy="20" r="1" />
               </svg>
+              {cartCount > 0 && (
+                <span className="absolute -right-1 -top-1 inline-flex min-h-5 min-w-5 items-center justify-center rounded-full bg-accent-500 px-1 text-[10px] font-bold leading-none text-white">
+                  {cartCount > 99 ? '99+' : cartCount}
+                </span>
+              )}
             </Link>
 
             {/* Auth */}
             {isAuthenticated ? (
               <div className="relative group">
-                <button className="w-10 h-10 rounded-full bg-accent-100 text-accent-600 font-semibold hover:bg-accent-200 transition-colors">
+                <button className="h-10 w-10 rounded-full border border-dark-200 bg-white font-semibold text-dark-800 transition-colors hover:bg-dark-100">
                   {user?.name?.charAt(0).toUpperCase() || '?'}
                 </button>
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
@@ -88,10 +102,10 @@ export default function Navbar() {
               </div>
             ) : (
               <>
-                <Link to="/login" className="btn-ghost text-sm">
+                <Link to="/login" className="btn-ghost hidden px-3 py-2 text-sm sm:inline-flex">
                   Sign In
                 </Link>
-                <Link to="/register" className="btn-primary text-sm">
+                <Link to="/register" className="btn-primary hidden px-4 py-2 text-sm sm:inline-flex">
                   Sign Up
                 </Link>
               </>
@@ -116,18 +130,37 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="md:hidden mt-4 pb-4 border-t border-dark-100 pt-4"
+            className="mt-3 border-t border-dark-100 pb-2 pt-3 md:hidden"
           >
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 to={link.href}
-                className="block px-4 py-2 text-dark-700 hover:bg-dark-50 hover:text-accent-500 rounded-lg transition-colors"
+                className="block rounded-lg px-3 py-2 text-sm font-semibold uppercase tracking-wide text-dark-700 transition-colors hover:bg-dark-50 hover:text-dark-900"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.label}
               </Link>
             ))}
+
+            {!isAuthenticated && (
+              <div className="mt-3 grid grid-cols-2 gap-2 px-1">
+                <Link
+                  to="/login"
+                  className="rounded-lg border border-dark-200 px-3 py-2 text-center text-sm font-medium text-dark-700 hover:bg-dark-50"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/register"
+                  className="rounded-lg bg-accent-500 px-3 py-2 text-center text-sm font-semibold text-white hover:bg-accent-600"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
           </motion.div>
         )}
       </div>
