@@ -1,6 +1,6 @@
-# 🍲 Akpu4All - Premium E-Commerce Redesign
+# 🍲 Akpu4All - Premium E-Commerce food ordering platform
 
-## 🎯 Project Overview
+## The Project Overview
 
 Akpu4All has been completely redesigned with a modern, premium UI/UX inspired by Saki Products. The redesign focuses on clean aesthetics, strong product focus, and high conversion optimization while maintaining all existing features and business logic.
 
