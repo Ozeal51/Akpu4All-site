@@ -3,11 +3,13 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { motion } from 'framer-motion'
 import { CartContext } from '../context/cart'
+import { ThemeContext } from '../context/theme.js'
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { isAuthenticated, user, logout } = useAuth()
   const { cartCount } = useContext(CartContext)
+  const { theme, toggleTheme } = useContext(ThemeContext)
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -74,6 +76,20 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
+
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className={`theme-toggle ${theme === 'dark-green' ? 'theme-toggle-active' : ''}`}
+              aria-label={`Switch to ${theme === 'milky' ? 'dark green' : 'milky'} theme`}
+              title={`Theme: ${theme === 'milky' ? 'Milky' : 'Dark Green'}`}
+            >
+              <span className="theme-toggle-track" aria-hidden="true">
+                <span className="theme-toggle-dot theme-toggle-dot-milky" />
+                <span className="theme-toggle-dot theme-toggle-dot-green" />
+                <span className="theme-toggle-thumb" />
+              </span>
+            </button>
 
             {/* Auth */}
             {isAuthenticated ? (
