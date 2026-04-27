@@ -105,7 +105,7 @@ export default function Navbar() {
                 <Link to="/login" className="btn-ghost hidden px-3 py-2 text-sm sm:inline-flex">
                   Sign In
                 </Link>
-                <Link to="/register" className="btn-primary hidden px-4 py-2 text-sm sm:inline-flex">
+                <Link to="/register" className="hidden rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700 sm:inline-flex">
                   Sign Up
                 </Link>
               </>
@@ -154,7 +154,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   to="/register"
-                  className="rounded-lg bg-accent-500 px-3 py-2 text-center text-sm font-semibold text-white hover:bg-accent-600"
+                  className="rounded-lg bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white hover:bg-blue-700"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Sign Up

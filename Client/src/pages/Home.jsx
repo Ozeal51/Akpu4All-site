@@ -83,7 +83,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center"
           >
-            <Link to="/meals" className="btn-primary group inline-block text-sm sm:text-base">
+            <Link to="/meals" className="group inline-block rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700 sm:text-base">
               <span className="flex items-center gap-2">
                 View Full Menu
                 <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -151,7 +151,7 @@ export default function Home() {
               </p>
             </div>
 
-            <Link to="/meals" className="inline-block rounded-full bg-white px-6 py-3 text-sm font-semibold text-dark-900 transition-transform hover:scale-[1.02]">
+            <Link to="/meals" className="inline-block rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:scale-[1.02] hover:bg-blue-700">
               Start Ordering
             </Link>
           </motion.div>

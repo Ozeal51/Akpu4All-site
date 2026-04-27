@@ -8,7 +8,14 @@ export default function Drinks() {
   const [query, setQuery] = useState('')
 
   const filtered = useMemo(() => {
-    return drinks.filter((d) => d.name.toLowerCase().includes(query.toLowerCase()))
+    const normalizedQuery = query.toLowerCase()
+
+    return drinks.filter((drink) => {
+      const searchableName = (drink.name ?? '').toLowerCase()
+      const searchableDescription = (drink.description ?? '').toLowerCase()
+
+      return searchableName.includes(normalizedQuery) || searchableDescription.includes(normalizedQuery)
+    })
   }, [query])
 
   return (

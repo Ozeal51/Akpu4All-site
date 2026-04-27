@@ -40,7 +40,7 @@ export default function Hero() {
             <div className="space-y-4">
               <motion.div
                 variants={itemVariants}
-                className="badge-primary w-fit"
+                className="w-fit rounded-full bg-blue-600 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-white"
               >
                 Fresh meals, Fast delivery
               </motion.div>
@@ -69,7 +69,7 @@ export default function Hero() {
             >
               <Link
                 to="/meals"
-                className="btn-primary group inline-block text-center"
+                className="group inline-block rounded-full bg-blue-600 px-6 py-3 text-center font-semibold text-white transition-colors hover:bg-blue-700"
               >
                 <span className="flex items-center justify-center gap-2">
                   Order Meals

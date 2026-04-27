@@ -8,6 +8,8 @@ export default function ProductCard({ product }) {
   const { addItem } = useContext(CartContext)
   const numericPrice = Number(product?.price)
   const formattedPrice = Number.isFinite(numericPrice) ? numericPrice.toLocaleString('en-NG') : '0'
+  const description = product?.description?.trim() || 'Freshly prepared and ready to order.'
+  const category = product?.category || 'Menu Item'
 
   const handleAddToCart = () => {
     addItem(product)
@@ -33,7 +35,7 @@ export default function ProductCard({ product }) {
         
         {/* Category Badge */}
         <div className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-dark-800 backdrop-blur">
-          {product.category}
+          {category}
         </div>
 
         {/* Overlay with CTA */}
@@ -62,7 +64,7 @@ export default function ProductCard({ product }) {
         </h3>
         
         <p className="mb-4 line-clamp-2 text-sm text-dark-600">
-          {product.description}
+          {description}
         </p>
 
         {/* Price and Action */}
