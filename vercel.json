@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "buildCommand": "cd Client && npm ci && npm run build",
+  "outputDirectory": "Client/dist",
+  "installCommand": "npm ci",
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
