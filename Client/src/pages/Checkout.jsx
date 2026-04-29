@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react'
 import { CartContext } from '../context/cart'
 import { motion } from 'framer-motion'
+import { formatPrice } from '../utils/formatPrice.js'
 
 export default function Checkout() {
   const { items, subtotalPrice, totalPrice, clearCart } = useContext(CartContext)
@@ -51,16 +52,22 @@ export default function Checkout() {
                 <span className="line-clamp-1 text-dark-700">
                   {item.name} x {item.quantity}
                 </span>
-                <span className="font-semibold text-dark-900">₦{(item.price * item.quantity).toFixed(2)}</span>
+                <span className="rounded-full border border-amber-200 bg-gradient-to-r from-amber-500 to-orange-500 px-3 py-1 font-extrabold text-white shadow-md ring-2 ring-amber-200/60">
+                  {formatPrice(item.price * item.quantity)}
+                </span>
               </div>
             ))}
           </div>
 
           <div className="mt-4 flex items-center justify-between text-dark-700">
             <span>Subtotal</span>
-            <span className="font-semibold text-dark-900">₦{subtotalPrice.toFixed(2)}</span>
+            <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 font-semibold text-amber-800">
+              {formatPrice(subtotalPrice)}
+            </span>
           </div>
-          <p className="mt-3 text-xl font-bold text-accent-600">Total: ₦{totalPrice.toFixed(2)}</p>
+          <p className="mt-3 inline-flex rounded-full border border-amber-200 bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-2 text-xl font-extrabold text-white shadow-lg ring-2 ring-amber-200/60">
+            Total: {formatPrice(totalPrice)}
+          </p>
         </div>
       </div>
     </motion.section>

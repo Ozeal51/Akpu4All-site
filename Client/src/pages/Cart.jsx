@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import { CartContext } from '../context/cart'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { formatPrice } from '../utils/formatPrice.js'
 
 export default function Cart() {
   const {
@@ -45,8 +46,12 @@ export default function Cart() {
                   <div className="min-w-[180px] flex-1">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-dark-500">{i.category}</p>
                     <h3 className="mt-1 text-lg font-semibold text-dark-900">{i.name}</h3>
-                    <p className="text-sm text-dark-600">₦{i.price.toFixed(2)} each</p>
-                    <p className="mt-1 text-sm font-semibold text-accent-600">₦{(i.price * i.quantity).toFixed(2)}</p>
+                    <p className="mt-2 inline-flex rounded-full border border-amber-200 bg-gradient-to-r from-amber-500 to-orange-500 px-3 py-1 text-xs font-extrabold text-white shadow-md ring-2 ring-amber-200/60">
+                      {formatPrice(i.price)} each
+                    </p>
+                    <p className="mt-2 inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold text-amber-800">
+                      Line total: {formatPrice(i.price * i.quantity)}
+                    </p>
                   </div>
                   <div className="flex flex-wrap items-center gap-2 sm:justify-end">
                     <button
@@ -90,11 +95,15 @@ export default function Cart() {
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-dark-500">Order summary</p>
             <div className="mb-2 mt-4 flex items-center justify-between">
               <span className="text-dark-700">Subtotal</span>
-              <span className="font-semibold text-dark-900">₦{subtotalPrice.toFixed(2)}</span>
+              <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 font-semibold text-amber-800">
+                {formatPrice(subtotalPrice)}
+              </span>
             </div>
             <div className="mb-4 flex items-center justify-between">
               <span className="font-semibold text-dark-900">Total</span>
-              <span className="text-xl font-bold text-accent-600">₦{totalPrice.toFixed(2)}</span>
+              <span className="rounded-full border border-amber-200 bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-2 text-xl font-extrabold text-white shadow-lg ring-2 ring-amber-200/60">
+                {formatPrice(totalPrice)}
+              </span>
             </div>
             <div className="space-y-3">
               <Link to="/checkout" className="btn-primary block w-full text-center">Proceed to Checkout</Link>

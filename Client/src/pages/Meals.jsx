@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { legacyMeals } from '../data/meals.js'
+import { meals } from '../data/meals.js'
 import { drinks } from '../data/drinks.js'
 import ProductCard from '../components/ProductCard.jsx'
 import { motion } from 'framer-motion'
@@ -46,7 +46,7 @@ export default function Meals() {
 
   const menuItems = useMemo(
     () => [
-      ...legacyMeals.map((meal) => ({
+      ...meals.map((meal) => ({
         ...meal,
         menuCategory: inferFoodCategory(meal),
       })),

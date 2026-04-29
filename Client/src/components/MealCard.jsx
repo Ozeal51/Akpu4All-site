@@ -1,11 +1,10 @@
 import { useContext } from 'react'
 import { CartContext } from '../context/cart'
 import { motion } from 'framer-motion'
+import { formatPrice } from '../utils/formatPrice.js'
 
 export default function MealCard({ meal }) {
   const { addItem } = useContext(CartContext)
-  const numericPrice = Number(meal?.price)
-  const formattedPrice = Number.isFinite(numericPrice) ? numericPrice.toLocaleString('en-NG') : '0'
   const description = meal?.description?.trim() || 'Freshly prepared meal ready to order.'
 
   return (
@@ -13,10 +12,14 @@ export default function MealCard({ meal }) {
       <div className="card h-full overflow-hidden">
         <img src={meal.image} alt={meal.name} className="h-44 w-full object-cover" />
         <div className="flex h-full flex-col p-4">
-          <h3 className="text-lg font-semibold text-dark-900">{meal.name}</h3>
+          <div className="mb-3 flex items-start justify-between gap-3">
+            <h3 className="text-lg font-semibold text-dark-900">{meal.name}</h3>
+            <span className="shrink-0 rounded-full border border-amber-200 bg-gradient-to-r from-amber-500 to-orange-500 px-3 py-1 text-sm font-extrabold text-white shadow-lg ring-2 ring-amber-200/60">
+              {formatPrice(meal?.price)}
+            </span>
+          </div>
           <p className="mb-4 mt-2 flex-grow text-sm text-dark-600">{description}</p>
           <div className="flex items-center justify-between">
-            <span className="text-lg font-bold text-accent-600">₦{formattedPrice}</span>
             <button
               type="button"
               className="btn-primary"
