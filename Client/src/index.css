@@ -246,16 +246,20 @@ select:focus {
   width: 0.62rem;
   height: 0.62rem;
   border-radius: 9999px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 2px solid transparent;
   z-index: 2;
 }
 
 .theme-toggle-dot-milky {
-  background: #f7f4ea;
+  background: #fef3c7;
+  border-color: #fcd34d;
+  box-shadow: 0 0 0 1px #d97706;
 }
 
 .theme-toggle-dot-green {
-  background: #1f5a3d;
+  background: #10b981;
+  border-color: #059669;
+  box-shadow: 0 0 0 1px #047857;
 }
 
 .theme-toggle-thumb {
@@ -264,7 +268,7 @@ select:focus {
   width: 1.3rem;
   height: 1.3rem;
   border-radius: 9999px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.4);
   background: linear-gradient(180deg, #ffffff 0%, #ece7d8 100%);
   box-shadow: 0 2px 8px rgba(17, 24, 39, 0.2);
   transition: transform 0.28s ease, background 0.28s ease;
@@ -272,17 +276,17 @@ select:focus {
 
 .theme-toggle-active .theme-toggle-thumb {
   transform: translateX(1.38rem);
-  background: linear-gradient(180deg, #295c42 0%, #1d4631 100%);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: linear-gradient(180deg, #34d399 0%, #10b981 100%);
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
 html[data-theme='dark-green'] .theme-toggle {
   background: #183626;
-  border-color: #3f644f;
+  border-color: #2d5a47;
 }
 
 html[data-theme='dark-green'] .theme-toggle-dot {
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: transparent;
 }
 
 html[data-theme='dark-green'] .bg-white {
