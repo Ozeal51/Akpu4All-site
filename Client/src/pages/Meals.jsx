@@ -1,8 +1,10 @@
-import { useMemo, useState } from 'react'
-import { meals } from '../data/meals.js'
-import { drinks } from '../data/drinks.js'
+import { useEffect, useMemo, useState } from 'react'
+import { meals as localMeals } from '../data/meals.js'
+import { drinks as localDrinks } from '../data/drinks.js'
 import ProductCard from '../components/ProductCard.jsx'
 import { motion } from 'framer-motion'
+import { productsAPI } from '../services/api.js'
+import { mapProduct } from '../utils/mapProduct.js'
 
 const categories = ['All', 'Akpu', 'Pounded yam', 'Garri', 'Soups', 'Drinks']
 
@@ -43,20 +45,62 @@ const inferFoodCategory = (meal) => {
 export default function Meals() {
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState(categories[0])
+  const [menuItems, setMenuItems] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
-  const menuItems = useMemo(
-    () => [
-      ...meals.map((meal) => ({
-        ...meal,
-        menuCategory: inferFoodCategory(meal),
-      })),
-      ...drinks.map((drink) => ({
-        ...drink,
-        menuCategory: 'Drinks',
-      })),
-    ],
-    []
-  )
+  useEffect(() => {
+    let isMounted = true
+
+    const loadProducts = async () => {
+      setLoading(true)
+      setError('')
+
+      try {
+        const { data } = await productsAPI.list()
+        const serverItems = (data.products || []).map((product) => {
+          const normalized = mapProduct(product)
+
+          return {
+            ...normalized,
+            menuCategory: normalized.menuType === 'drink' ? 'Drinks' : inferFoodCategory(normalized),
+          }
+        })
+
+        if (isMounted && serverItems.length > 0) {
+          setMenuItems(serverItems)
+          return
+        }
+      } catch (fetchError) {
+        if (isMounted) {
+          setError('Live menu could not load. Showing the local catalog instead.')
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false)
+        }
+      }
+
+      if (isMounted) {
+        setMenuItems([
+          ...localMeals.map((meal) => ({
+            ...meal,
+            menuCategory: inferFoodCategory(meal),
+          })),
+          ...localDrinks.map((drink) => ({
+            ...drink,
+            menuCategory: 'Drinks',
+          })),
+        ])
+      }
+    }
+
+    loadProducts()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
 
   const filtered = useMemo(() => {
     return menuItems.filter((m) => {
@@ -85,6 +129,12 @@ export default function Meals() {
       {/* Filters Section */}
       <section className="section-padding bg-white border-b border-dark-100">
         <div className="container-max">
+          {error ? (
+            <div className="mb-5 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
+              {error}
+            </div>
+          ) : null}
+
           {/* Search */}
           <div className="mb-6 md:mb-8">
             <input
@@ -118,7 +168,18 @@ export default function Meals() {
       {/* Meals Grid */}
       <section className="section-padding bg-white">
         <div className="container-max">
-          {filtered.length > 0 ? (
+          {loading ? (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 md:gap-8">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <div key={index} className="card h-[22rem] animate-pulse rounded-[1.5rem] bg-white p-4">
+                  <div className="h-44 rounded-2xl bg-dark-100" />
+                  <div className="mt-4 h-4 w-2/3 rounded bg-dark-100" />
+                  <div className="mt-3 h-3 w-full rounded bg-dark-100" />
+                  <div className="mt-2 h-3 w-5/6 rounded bg-dark-100" />
+                </div>
+              ))}
+            </div>
+          ) : filtered.length > 0 ? (
             <>
               <p className="text-dark-600 mb-8">
                 Showing {filtered.length} result{filtered.length !== 1 ? 's' : ''}

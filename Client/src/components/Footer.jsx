@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="border-t border-dark-200 bg-white text-dark-800">
       <div className="section-padding">
         <div className="container-max">
-          <div className="mb-12 rounded-[2rem] border border-dark-200 bg-primary-50 p-6 md:p-8">
+          <div className="mb-12 rounded-[2rem] border border-dark-200 bg-primary-50 p-6 shadow-soft md:p-8">
             <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-dark-500">Get 10% off your first order</p>
@@ -17,9 +17,9 @@ export default function Footer() {
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className="w-full rounded-full border border-dark-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-dark-400 focus:ring-0"
+                  className="w-full rounded-full border border-dark-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-accent-500 focus:ring-2 focus:ring-accent-100"
                 />
-                <button type="button" className="whitespace-nowrap rounded-full bg-blue-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-blue-700">Subscribe</button>
+                <button type="button" className="btn-primary whitespace-nowrap px-6 py-3 font-semibold">Subscribe</button>
               </form>
             </div>
           </div>
@@ -66,7 +66,7 @@ export default function Footer() {
           <div className="border-t border-dark-200 pt-8">
             <div className="flex flex-col items-center justify-between gap-3 md:flex-row">
               <p className="text-sm text-dark-500">© 2026 Akpu4All. All rights reserved.</p>
-              <p className="text-sm text-dark-500">Secure payments · fast checkout · Fast delievery</p>
+              <p className="text-sm text-dark-500">Secure payments · fast checkout · fast delivery</p>
             </div>
           </div>
         </div>

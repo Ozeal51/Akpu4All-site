@@ -1,10 +1,7 @@
-const { validationResult } = require('express-validator')
+﻿const { validationResult } = require('express-validator')
 const User = require('../models/User')
 const { sendTokenResponse } = require('../utils/generateToken')
 
-// @desc    Register a new user
-// @route   POST /api/auth/register
-// @access  Public
 const register = async (req, res) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
@@ -27,9 +24,6 @@ const register = async (req, res) => {
   }
 }
 
-// @desc    Login user
-// @route   POST /api/auth/login
-// @access  Public
 const login = async (req, res) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
@@ -49,6 +43,9 @@ const login = async (req, res) => {
       return res.status(401).json({ success: false, message: 'Invalid email or password' })
     }
 
+    user.lastLoginAt = new Date()
+    await user.save({ validateBeforeSave: false })
+
     sendTokenResponse(user, 200, res)
   } catch (error) {
     console.error('Login Error:', error)
@@ -56,12 +53,13 @@ const login = async (req, res) => {
   }
 }
 
-// @desc    Get current logged-in user
-// @route   GET /api/auth/me
-// @access  Private
 const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id)
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' })
+    }
+
     res.status(200).json({
       success: true,
       user: {
@@ -71,6 +69,9 @@ const getMe = async (req, res) => {
         phone: user.phone,
         avatar: user.avatar,
         role: user.role,
+        status: user.status,
+        isVerified: user.isVerified,
+        lastLoginAt: user.lastLoginAt,
         createdAt: user.createdAt,
       },
     })
@@ -79,9 +80,6 @@ const getMe = async (req, res) => {
   }
 }
 
-// @desc    Update user profile
-// @route   PUT /api/auth/profile
-// @access  Private
 const updateProfile = async (req, res) => {
   try {
     const { name, phone, avatar } = req.body
@@ -95,6 +93,10 @@ const updateProfile = async (req, res) => {
       runValidators: true,
     })
 
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' })
+    }
+
     res.status(200).json({
       success: true,
       user: {
@@ -104,6 +106,9 @@ const updateProfile = async (req, res) => {
         phone: user.phone,
         avatar: user.avatar,
         role: user.role,
+        status: user.status,
+        isVerified: user.isVerified,
+        lastLoginAt: user.lastLoginAt,
         createdAt: user.createdAt,
       },
     })
@@ -112,9 +117,6 @@ const updateProfile = async (req, res) => {
   }
 }
 
-// @desc    Change password
-// @route   PUT /api/auth/change-password
-// @access  Private
 const changePassword = async (req, res) => {
   const { currentPassword, newPassword } = req.body
 
@@ -127,6 +129,10 @@ const changePassword = async (req, res) => {
 
   try {
     const user = await User.findById(req.user.id).select('+password')
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' })
+    }
+
     const isMatch = await user.matchPassword(currentPassword)
     if (!isMatch) {
       return res.status(401).json({ success: false, message: 'Current password is incorrect' })

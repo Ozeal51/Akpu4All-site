@@ -1,13 +1,52 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Hero from '../components/Hero.jsx'
 import Features from '../components/Features.jsx'
 import ProductCard from '../components/ProductCard.jsx'
-import { meals } from '../data/meals.js'
+import { meals as localMeals } from '../data/meals.js'
+import { productsAPI } from '../services/api.js'
+import { mapProduct } from '../utils/mapProduct.js'
 
 export default function Home() {
-  const featured = meals.slice(0, 6)
-  const spotlight = meals.slice(0, 3)
+  const [featured, setFeatured] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    let isMounted = true
+
+    const loadFeatured = async () => {
+      setLoading(true)
+
+      try {
+        const { data } = await productsAPI.list()
+        const products = (data.products || []).map(mapProduct)
+
+        if (isMounted && products.length > 0) {
+          setFeatured(products.slice(0, 6))
+          return
+        }
+      } catch (error) {
+        void error
+      } finally {
+        if (isMounted) {
+          setLoading(false)
+        }
+      }
+
+      if (isMounted) {
+        setFeatured(localMeals.slice(0, 6))
+      }
+    }
+
+    loadFeatured()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  const spotlight = (featured.length > 0 ? featured : localMeals).slice(0, 3)
 
   return (
     <>
@@ -69,11 +108,24 @@ export default function Home() {
           </motion.div>
 
           {/* Meals Grid */}
-          <div className="mb-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-6">
-            {featured.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="mb-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-6">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <div key={index} className="card h-[28rem] animate-pulse rounded-[1.5rem] bg-white p-4">
+                  <div className="h-52 rounded-2xl bg-dark-100" />
+                  <div className="mt-4 h-4 w-2/3 rounded bg-dark-100" />
+                  <div className="mt-3 h-3 w-full rounded bg-dark-100" />
+                  <div className="mt-2 h-3 w-5/6 rounded bg-dark-100" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="mb-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-6">
+              {featured.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
 
           {/* CTA */}
           <motion.div

@@ -49,7 +49,7 @@ export default function ProductCard({ product }) {
             animate={{ scale: isHovered ? 1 : 0.8, y: isHovered ? 0 : 20 }}
             transition={{ duration: 0.3 }}
             onClick={handleAddToCart}
-            className="rounded-full bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wide text-dark-900"
+            className="btn-primary px-4 py-2 text-xs uppercase tracking-wide"
           >
             Quick Add
           </motion.button>
@@ -73,18 +73,9 @@ export default function ProductCard({ product }) {
         </p>
 
         {/* Price and Action */}
-        <div className="mt-auto flex items-center justify-end gap-3 border-t border-dark-100 pt-4">
-          <button
-            onClick={handleAddToCart}
-            className="hidden rounded-full bg-dark-900 px-5 py-2.5 text-xs font-semibold uppercase tracking-wide text-white transition-all hover:bg-dark-700 md:inline-flex"
-          >
-            Buy Now
-          </button>
-        </div>
-
         <button
           onClick={handleAddToCart}
-          className="mt-4 w-full rounded-full bg-dark-900 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-dark-700 md:hidden"
+          className="btn-primary mt-auto w-full"
         >
           Buy Now
         </button>

@@ -1,7 +1,9 @@
 import axios from 'axios'
 
+const defaultApiBaseUrl = import.meta.env.DEV ? 'http://localhost:5000/api' : '/api'
+
 const API = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || defaultApiBaseUrl,
 })
 
 // Attach token to every request if available
@@ -32,6 +34,28 @@ export const authAPI = {
   getMe: () => API.get('/auth/me'),
   updateProfile: (data) => API.put('/auth/profile', data),
   changePassword: (data) => API.put('/auth/change-password', data),
+}
+
+export const productsAPI = {
+  list: (params = {}) => API.get('/products', { params }),
+  getById: (id) => API.get(`/products/${id}`),
+}
+
+export const ordersAPI = {
+  listMine: () => API.get('/orders/mine'),
+  getById: (id) => API.get(`/orders/${id}`),
+  create: (data) => API.post('/orders', data),
+}
+
+export const vendorsAPI = {
+  list: () => API.get('/vendors'),
+  getById: (id) => API.get(`/vendors/${id}`),
+}
+
+export const transactionsAPI = {
+  listMine: () => API.get('/transactions'),
+  getById: (id) => API.get(`/transactions/${id}`),
+  create: (data) => API.post('/transactions', data),
 }
 
 export default API

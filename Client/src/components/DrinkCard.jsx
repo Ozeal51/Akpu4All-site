@@ -23,15 +23,13 @@ export default function DrinkCard({ drink }) {
             </span>
           </div>
           <p className="mb-4 mt-2 line-clamp-2 text-sm text-dark-600">{description}</p>
-          <div className="mt-auto flex items-center justify-between gap-3 border-t border-dark-100 pt-4">
-            <button
-              type="button"
-              className="rounded-full border border-dark-300 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-dark-800 transition-all hover:border-dark-800"
-              onClick={() => addItem({ id: drink.id, name: drink.name, price: drink.price, image: drink.image })}
-            >
-              Order Now
-            </button>
-          </div>
+          <button
+            type="button"
+            className="btn-primary mt-auto w-full"
+            onClick={() => addItem({ id: drink.id, name: drink.name, price: drink.price, image: drink.image, category: drink.category })}
+          >
+            Order Now
+          </button>
         </div>
       </div>
     </motion.div>

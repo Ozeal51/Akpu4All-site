@@ -20,10 +20,15 @@ export default function Cart() {
     return (
       <motion.section initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }} className="section-padding bg-primary-50">
         <div className="container-max text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-dark-500">Cart</p>
-          <h1 className="mt-3 text-4xl font-display font-bold text-dark-900">Your cart is empty</h1>
-          <p className="mt-3 text-dark-600">Browse the menu and add a few meals to get started.</p>
-          <Link to="/meals" className="btn-primary mt-6 inline-block">Browse Meals</Link>
+          <div className="mx-auto max-w-xl rounded-[2rem] border border-dark-100 bg-white px-6 py-10 shadow-soft sm:px-10">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-dark-500">Cart</p>
+            <h1 className="mt-3 text-4xl font-display font-bold text-dark-900">Your cart is empty</h1>
+            <p className="mt-3 text-dark-600">Browse the menu and add a few meals to get started.</p>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+              <Link to="/meals" className="btn-primary inline-block">Browse Meals</Link>
+              <Link to="/drinks" className="inline-block rounded-full border border-dark-300 px-6 py-3 text-center font-semibold text-dark-700 hover:bg-dark-100">See Drinks</Link>
+            </div>
+          </div>
         </div>
       </motion.section>
     )
@@ -53,7 +58,7 @@ export default function Cart() {
                       Line total: {formatPrice(i.price * i.quantity)}
                     </p>
                   </div>
-                  <div className="flex flex-wrap items-center gap-2 sm:justify-end">
+                  <div className="flex flex-wrap items-center gap-2 rounded-[1.5rem] border border-dark-100 bg-dark-50 p-3 sm:justify-end">
                     <button
                       type="button"
                       className="rounded-full border border-dark-300 px-3 py-2 text-sm hover:bg-dark-100"
@@ -99,6 +104,7 @@ export default function Cart() {
                 {formatPrice(subtotalPrice)}
               </span>
             </div>
+            <p className="mb-4 text-xs text-dark-500">Review your cart before checking out. Quantities update instantly.</p>
             <div className="mb-4 flex items-center justify-between">
               <span className="font-semibold text-dark-900">Total</span>
               <span className="rounded-full border border-amber-200 bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-2 text-xl font-extrabold text-white shadow-lg ring-2 ring-amber-200/60">

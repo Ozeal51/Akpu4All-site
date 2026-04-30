@@ -3,11 +3,30 @@ import { motion } from 'framer-motion'
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
+  const [sending, setSending] = useState(false)
+  const [status, setStatus] = useState('')
   const onChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }))
   const onSubmit = (e) => {
     e.preventDefault()
-    alert('Thanks for contacting Akpu4All! We will reach out shortly.')
+    setSending(true)
+    setStatus('')
+
+    const subject = encodeURIComponent(`Akpu4All contact from ${form.name || 'Website visitor'}`)
+    const body = encodeURIComponent(
+      `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\n\nMessage:\n${form.message}`,
+    )
+
+    const mailtoUrl = `mailto:sirozeal51@gmail.com?subject=${subject}&body=${body}`
+    const whatsappText = encodeURIComponent(
+      `Hello Akpu4All, my name is ${form.name}. ${form.message}`,
+    )
+
+    window.open(mailtoUrl, '_blank', 'noopener,noreferrer')
+    window.open(`https://wa.me/2349021927275?text=${whatsappText}`, '_blank', 'noopener,noreferrer')
+
     setForm({ name: '', email: '', phone: '', message: '' })
+    setStatus('Your message is ready in email and WhatsApp. Send it from either tab that opened.')
+    setSending(false)
   }
 
   return (
@@ -35,6 +54,12 @@ export default function Contact() {
             </div>
 
             <form onSubmit={onSubmit} className="space-y-4 rounded-[2rem] border border-dark-100 bg-white p-6 shadow-soft">
+              {status ? (
+                <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
+                  {status}
+                </div>
+              ) : null}
+
               <div>
                 <label htmlFor="name" className="mb-2 block text-sm font-semibold text-dark-800">Name</label>
                 <input id="name" name="name" value={form.name} onChange={onChange} required className="w-full rounded-full border-2 border-dark-200 px-4 py-3 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" />
@@ -51,7 +76,9 @@ export default function Contact() {
                 <label htmlFor="message" className="mb-2 block text-sm font-semibold text-dark-800">Message</label>
                 <textarea id="message" rows={4} name="message" value={form.message} onChange={onChange} required className="w-full rounded-[1.5rem] border-2 border-dark-200 px-4 py-3 focus:border-accent-500 focus:ring-2 focus:ring-accent-100" />
               </div>
-              <button type="submit" className="btn-primary w-full sm:w-auto">Submit</button>
+              <button type="submit" className="btn-primary w-full sm:w-auto" disabled={sending}>
+                {sending ? 'Opening contact options...' : 'Send Message'}
+              </button>
             </form>
           </div>
 

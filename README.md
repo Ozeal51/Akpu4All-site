@@ -76,7 +76,17 @@ Core files:
 - npm 9+
 - MongoDB (for `server`)
 
-### 1) Run Client
+### 1) One-step dev (recommended)
+
+```bash
+cd akpu-4all
+npm install
+npm run dev
+```
+
+This starts both `server` and `Client` together from the project root.
+
+### 2) Run Client only
 
 ```bash
 cd Client
@@ -84,7 +94,9 @@ npm install
 npm run dev
 ```
 
-### 2) Run Express API Server
+In development, the client calls the API directly at `http://localhost:5000/api`. Start the server first if you want live data instead of the local fallback catalog.
+
+### 3) Run Express API Server only
 
 ```bash
 cd server

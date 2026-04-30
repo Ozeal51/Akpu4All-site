@@ -13,6 +13,19 @@ export default function About() {
             <p className="max-w-2xl text-sm leading-relaxed text-dark-600 md:text-lg">
               Akpu4All connects you to delicious Swallows and refreshing drinks with a smooth cart and checkout flow that stays clean, mobile-first, and easy to use.
             </p>
+
+            <div className="grid gap-3 sm:grid-cols-3">
+              {[
+                { label: 'Fast Checkout', value: 'Simple, guided ordering' },
+                { label: 'Fresh Menu', value: 'Meals and drinks live together' },
+                { label: 'Mobile First', value: 'Built for quick browsing' },
+              ].map((item) => (
+                <article key={item.label} className="rounded-[1.5rem] border border-dark-100 bg-white p-4 shadow-soft">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-dark-500">{item.label}</p>
+                  <p className="mt-2 text-sm font-semibold text-dark-900">{item.value}</p>
+                </article>
+              ))}
+            </div>
           </div>
 
           <div className="card overflow-hidden rounded-[2rem]">
@@ -30,7 +43,7 @@ export default function About() {
             { title: 'Our Promise', text: 'From menu discovery to checkout, every step is designed for clarity and convenience.' },
             { title: 'Our Focus', text: 'Mobile-first design, smoother ordering flow, and a better everyday swallow experience.' },
           ].map((item) => (
-            <article key={item.title} className="card p-6">
+            <article key={item.title} className="card p-6 transition-transform duration-200 hover:-translate-y-1">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-dark-500">{item.title}</p>
               <h2 className="mt-3 text-2xl font-bold text-dark-900">{item.title}</h2>
               <p className="mt-3 text-sm leading-relaxed text-dark-600">{item.text}</p>

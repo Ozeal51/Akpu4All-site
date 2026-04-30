@@ -61,7 +61,7 @@ export default function Navbar() {
             {/* Cart */}
             <Link
               to="/cart"
-              className="relative rounded-lg p-2 text-dark-700 hover:bg-dark-100 hover:text-accent-500 transition-colors"
+              className="relative rounded-full border border-dark-200 bg-white p-2 text-dark-700 transition-colors hover:border-dark-300 hover:bg-dark-50 hover:text-accent-500"
               aria-label="Order cart"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,7 +80,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={toggleTheme}
-              className={`theme-toggle ${theme === 'dark-green' ? 'theme-toggle-active' : ''}`}
+              className={`theme-toggle rounded-full border border-dark-200 bg-white ${theme === 'dark-green' ? 'theme-toggle-active' : ''}`}
               aria-label={`Switch to ${theme === 'milky' ? 'dark green' : 'milky'} theme`}
               title={`Theme: ${theme === 'milky' ? 'Milky' : 'Dark Green'}`}
             >
@@ -94,23 +94,23 @@ export default function Navbar() {
             {/* Auth */}
             {isAuthenticated ? (
               <div className="relative group">
-                <button className="h-10 w-10 rounded-full border border-dark-200 bg-white font-semibold text-dark-800 transition-colors hover:bg-dark-100">
+                <button className="h-10 w-10 rounded-full border border-dark-200 bg-white font-semibold text-dark-800 transition-colors hover:bg-dark-50">
                   {user?.name?.charAt(0).toUpperCase() || '?'}
                 </button>
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                  <div className="p-4 border-b border-dark-100">
+                <div className="absolute right-0 mt-2 w-48 rounded-2xl border border-dark-100 bg-white shadow-soft opacity-0 invisible transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                  <div className="border-b border-dark-100 p-4">
                     <p className="font-semibold text-dark-900">{user?.name}</p>
                     <p className="text-sm text-dark-600">{user?.email}</p>
                   </div>
                   <Link
                     to="/profile"
-                    className="block px-4 py-2 text-dark-700 hover:bg-dark-50 transition-colors"
+                    className="block px-4 py-2 text-dark-700 transition-colors hover:bg-dark-50"
                   >
                     Profile
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-dark-700 hover:bg-dark-50 transition-colors"
+                    className="w-full px-4 py-2 text-left text-dark-700 transition-colors hover:bg-dark-50"
                   >
                     Sign Out
                   </button>
@@ -121,7 +121,7 @@ export default function Navbar() {
                 <Link to="/login" className="btn-ghost hidden px-3 py-2 text-sm sm:inline-flex">
                   Sign In
                 </Link>
-                <Link to="/register" className="hidden rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700 sm:inline-flex">
+                <Link to="/register" className="btn-primary hidden px-4 py-2 text-sm sm:inline-flex">
                   Sign Up
                 </Link>
               </>
@@ -129,7 +129,7 @@ export default function Navbar() {
 
             {/* Mobile Menu Toggle */}
             <button
-              className="md:hidden p-2 hover:bg-dark-100 rounded-lg transition-colors"
+              className="rounded-full border border-dark-200 p-2 transition-colors hover:bg-dark-50 md:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle menu"
             >
@@ -146,13 +146,13 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="mt-3 border-t border-dark-100 pb-2 pt-3 md:hidden"
+            className="mt-3 rounded-2xl border border-dark-100 bg-white p-3 shadow-soft md:hidden"
           >
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 to={link.href}
-                className="block rounded-lg px-3 py-2 text-sm font-semibold uppercase tracking-wide text-dark-700 transition-colors hover:bg-dark-50 hover:text-dark-900"
+                className="block rounded-xl px-3 py-2 text-sm font-semibold uppercase tracking-wide text-dark-700 transition-colors hover:bg-dark-50 hover:text-dark-900"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.label}
@@ -163,14 +163,14 @@ export default function Navbar() {
               <div className="mt-3 grid grid-cols-2 gap-2 px-1">
                 <Link
                   to="/login"
-                  className="rounded-lg border border-dark-200 px-3 py-2 text-center text-sm font-medium text-dark-700 hover:bg-dark-50"
+                  className="rounded-full border border-dark-200 px-3 py-2 text-center text-sm font-medium text-dark-700 hover:bg-dark-50"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Sign In
                 </Link>
                 <Link
                   to="/register"
-                  className="rounded-lg bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white hover:bg-blue-700"
+                  className="btn-primary px-3 py-2 text-center text-sm font-semibold"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Sign Up

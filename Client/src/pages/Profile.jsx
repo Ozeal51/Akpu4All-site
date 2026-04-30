@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useAuth } from '../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
+import { formatPrice } from '../utils/formatPrice.js'
+import { ordersAPI } from '../services/api.js'
 
 export default function Profile() {
-  const { user, logout, updateProfile, changePassword } = useAuth()
+  const { user, loading, logout, updateProfile, changePassword } = useAuth()
   const navigate = useNavigate()
 
   const [activeTab, setActiveTab] = useState('profile')
@@ -16,6 +18,47 @@ export default function Profile() {
   const [savingPw, setSavingPw] = useState(false)
   const [showCurrent, setShowCurrent] = useState(false)
   const [showNew, setShowNew] = useState(false)
+  const [orders, setOrders] = useState([])
+  const [ordersLoading, setOrdersLoading] = useState(false)
+  const [ordersError, setOrdersError] = useState('')
+
+  useEffect(() => {
+    if (!user) return
+
+    let isMounted = true
+
+    const loadOrders = async () => {
+      setOrdersLoading(true)
+      setOrdersError('')
+
+      try {
+        const { data } = await ordersAPI.listMine()
+        if (isMounted) {
+          setOrders(data.orders || [])
+        }
+      } catch (error) {
+        if (isMounted) {
+          setOrdersError('We could not load your recent orders right now.')
+        }
+      } finally {
+        if (isMounted) {
+          setOrdersLoading(false)
+        }
+      }
+    }
+
+    loadOrders()
+
+    return () => {
+      isMounted = false
+    }
+  }, [user])
+
+  useEffect(() => {
+    setProfileData({ name: user?.name || '', phone: user?.phone || '' })
+  }, [user])
+
+  const recentOrders = useMemo(() => orders.slice(0, 5), [orders])
 
   const handleProfileChange = (e) => {
     setProfileData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
@@ -73,6 +116,20 @@ export default function Profile() {
     navigate('/')
   }
 
+  if (loading) {
+    return (
+      <section className="section-padding bg-primary-50">
+        <div className="container-max max-w-3xl">
+          <div className="card animate-pulse rounded-[2rem] bg-white p-8 shadow-soft">
+            <div className="h-6 w-32 rounded bg-dark-100" />
+            <div className="mt-4 h-10 w-64 rounded bg-dark-100" />
+            <div className="mt-6 h-80 rounded-[1.5rem] bg-dark-100" />
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   if (!user) return null
 
   const avatarInitial = user.name?.charAt(0).toUpperCase() || '?'
@@ -102,6 +159,9 @@ export default function Profile() {
               </button>
               <button type="button" onClick={() => setActiveTab('security')} className={`rounded-full px-4 py-2 text-sm font-semibold ${activeTab === 'security' ? 'bg-dark-900 text-white' : 'bg-dark-100 text-dark-700 hover:bg-dark-200'}`}>
                 Security
+              </button>
+              <button type="button" onClick={() => setActiveTab('orders')} className={`rounded-full px-4 py-2 text-sm font-semibold ${activeTab === 'orders' ? 'bg-dark-900 text-white' : 'bg-dark-100 text-dark-700 hover:bg-dark-200'}`}>
+                Orders
               </button>
             </div>
 
@@ -173,6 +233,59 @@ export default function Profile() {
                   {savingPw ? 'Updating...' : 'Update Password'}
                 </button>
               </form>
+            )}
+
+            {activeTab === 'orders' && (
+              <div className="space-y-4">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-dark-500">Recent Orders</p>
+                  <h2 className="mt-2 text-2xl font-bold text-dark-900">Your order history</h2>
+                  <p className="mt-2 text-sm text-dark-600">Track your latest purchases and review what you ordered.</p>
+                </div>
+
+                {ordersError ? (
+                  <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
+                    {ordersError}
+                  </div>
+                ) : null}
+
+                {ordersLoading ? (
+                  <div className="space-y-3">
+                    {Array.from({ length: 3 }).map((_, index) => (
+                      <div key={index} className="h-24 animate-pulse rounded-2xl bg-dark-100" />
+                    ))}
+                  </div>
+                ) : recentOrders.length ? (
+                  <div className="space-y-3">
+                    {recentOrders.map((order) => (
+                      <article key={order.id} className="rounded-2xl border border-dark-100 p-4 shadow-sm">
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                          <div>
+                            <p className="text-sm font-semibold text-dark-900">Order #{order.orderNumber || String(order.id).slice(-6)}</p>
+                            <p className="text-xs text-dark-500">
+                              {order.createdAt ? new Date(order.createdAt).toLocaleString() : 'Recent order'}
+                            </p>
+                          </div>
+                          <span className="rounded-full border border-amber-200 bg-gradient-to-r from-amber-500 to-orange-500 px-3 py-1 text-xs font-extrabold text-white shadow-md ring-2 ring-amber-200/60 capitalize">
+                            {order.status || 'pending'}
+                          </span>
+                        </div>
+
+                        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-sm text-dark-700">
+                          <span>{order.items?.length || 0} item(s)</span>
+                          <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 font-semibold text-amber-800">
+                            {formatPrice(order.pricing?.total ?? 0)}
+                          </span>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="rounded-2xl border border-dark-100 bg-dark-50 px-4 py-6 text-sm text-dark-600">
+                    You have no orders yet. Start with the menu to see your first order here.
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </motion.div>

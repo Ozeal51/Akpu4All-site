@@ -19,15 +19,13 @@ export default function MealCard({ meal }) {
             </span>
           </div>
           <p className="mb-4 mt-2 flex-grow text-sm text-dark-600">{description}</p>
-          <div className="flex items-center justify-between">
-            <button
-              type="button"
-              className="btn-primary"
-              onClick={() => addItem({ id: meal.id, name: meal.name, price: meal.price, image: meal.image })}
-            >
-              Add to Cart
-            </button>
-          </div>
+          <button
+            type="button"
+            className="btn-primary mt-auto w-full"
+            onClick={() => addItem({ id: meal.id, name: meal.name, price: meal.price, image: meal.image, category: meal.category })}
+          >
+            Add to Cart
+          </button>
         </div>
       </div>
     </motion.div>
