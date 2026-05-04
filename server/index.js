@@ -9,6 +9,7 @@ const orderRoutes = require('./routes/orderRoutes')
 const transactionRoutes = require('./routes/transactionRoutes')
 const vendorRoutes = require('./routes/vendorRoutes')
 const adminRoutes = require('./routes/adminRoutes')
+const { router: userRoutes } = require('./routes/userRoutes')
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -36,7 +37,7 @@ app.get('/api', (req, res) => {
   res.json({
     success: true,
     service: 'Akpu4All API',
-    routes: ['/api/auth', '/api/products', '/api/orders', '/api/transactions', '/api/vendors', '/api/admin'],
+    routes: ['/api/auth', '/api/products', '/api/orders', '/api/transactions', '/api/vendors', '/api/users', '/api/admin'],
   })
 })
 
@@ -45,6 +46,7 @@ app.use('/api/products', productRoutes)
 app.use('/api/orders', orderRoutes)
 app.use('/api/transactions', transactionRoutes)
 app.use('/api/vendors', vendorRoutes)
+app.use('/api/users', userRoutes)
 app.use('/api/admin', adminRoutes)
 
 app.use((req, res) => {
