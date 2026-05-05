@@ -1,0 +1,31 @@
+{
+  "name": "akpu4all-api",
+  "description": "Akpu4All Food Ordering Platform - Backend API",
+  "keywords": ["nodejs", "express", "mongodb", "api"],
+  "repository": "https://github.com/yourusername/akpu-4all",
+  "success_url": "/health",
+  "env": {
+    "MONGO_URI": {
+      "description": "MongoDB Atlas connection string",
+      "value": "mongodb+srv://user:password@cluster.mongodb.net/akpu4all?retryWrites=true&w=majority"
+    },
+    "JWT_SECRET": {
+      "description": "Secret key for JWT token signing. Generate a random string.",
+      "generator": "secret"
+    },
+    "JWT_EXPIRE": {
+      "description": "JWT token expiration time",
+      "value": "7d"
+    },
+    "CLIENT_URLS": {
+      "description": "Comma-separated list of allowed client origins for CORS",
+      "value": "https://yourdomain.com"
+    },
+    "NODE_ENV": {
+      "description": "Node environment",
+      "value": "production"
+    }
+  },
+  "buildCommand": "npm install",
+  "startCommand": "npm start"
+}
