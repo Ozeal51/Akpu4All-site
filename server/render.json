@@ -2,7 +2,7 @@
   "name": "akpu4all-api",
   "description": "Akpu4All Food Ordering Platform - Backend API",
   "keywords": ["nodejs", "express", "mongodb", "api"],
-  "repository": "https://github.com/yourusername/akpu-4all",
+  "repository": "https://github.com/Ozeal51/Akpu4All-site",
   "success_url": "/health",
   "env": {
     "MONGO_URI": {
@@ -19,7 +19,7 @@
     },
     "CLIENT_URLS": {
       "description": "Comma-separated list of allowed client origins for CORS",
-      "value": "https://yourdomain.com"
+      "value": " http://localhost:5173/,https://akpu4all-client.vercel.app"
     },
     "NODE_ENV": {
       "description": "Node environment",

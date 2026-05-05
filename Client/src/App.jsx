@@ -14,7 +14,7 @@ import Profile from './pages/Profile.jsx'
 import { ProtectedRoute, GuestRoute } from './components/ProtectedRoute.jsx'
 
 export default function App() {
-  const whatsappNumber = '09021927275'
+  // const whatsappNumber = '09021927275'
   const whatsappLink = `https://wa.me/2349021927275?text=${encodeURIComponent('Hi Akpu4All, I want to place an order.')}`
 
   return (
