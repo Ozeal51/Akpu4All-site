@@ -59,6 +59,9 @@ logger.info('Server Configuration', {
   clientOrigins,
 })
 
+// Trust proxy (required for rate-limiting behind Render's reverse proxy)
+app.set('trust proxy', 1)
+
 // Security middleware
 app.use(securityHeaders)
 app.use(
