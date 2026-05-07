@@ -19,7 +19,7 @@
     },
     "CLIENT_URLS": {
       "description": "Comma-separated list of allowed client origins for CORS",
-      "value": " http://localhost:5173/,https://akpu4all-client.vercel.app"
+      "value": "https://akpu4all-client.vercel.app,http://localhost:5173,http://localhost:5174"
     },
     "NODE_ENV": {
       "description": "Node environment",

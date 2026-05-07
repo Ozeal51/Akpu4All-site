@@ -34,6 +34,24 @@ const clientOrigins = (process.env.CLIENT_URLS || process.env.CLIENT_URL || 'htt
   .map((origin) => origin.trim())
   .filter(Boolean)
 
+const allowedOriginPatterns = [
+  /^https?:\/\/localhost(?::\d+)?$/i,
+  /^https:\/\/.+\.vercel\.app$/i,
+  /^https:\/\/.+\.onrender\.com$/i,
+]
+
+const isAllowedOrigin = (origin) => {
+  if (!origin) {
+    return true
+  }
+
+  if (clientOrigins.includes(origin)) {
+    return true
+  }
+
+  return allowedOriginPatterns.some((pattern) => pattern.test(origin))
+}
+
 logger.info('Server Configuration', {
   port,
   environment: process.env.NODE_ENV || 'development',
@@ -44,7 +62,14 @@ logger.info('Server Configuration', {
 app.use(securityHeaders)
 app.use(
   cors({
-    origin: clientOrigins,
+    origin(origin, callback) {
+      if (isAllowedOrigin(origin)) {
+        return callback(null, true)
+      }
+
+      logger.warn('Blocked CORS origin', { origin })
+      return callback(new Error('Not allowed by CORS'))
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],

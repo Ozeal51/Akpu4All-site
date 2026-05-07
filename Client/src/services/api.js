@@ -1,9 +1,11 @@
 import axios from 'axios'
 
-const defaultApiBaseUrl = import.meta.env.DEV ? 'http://localhost:5000/api' : '/api'
+const fallbackProdApiBaseUrl = 'https://akpu4all-api.onrender.com/api'
+const defaultApiBaseUrl = import.meta.env.DEV ? 'http://localhost:5000/api' : fallbackProdApiBaseUrl
+const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim() || defaultApiBaseUrl
 
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || defaultApiBaseUrl,
+  baseURL: configuredApiBaseUrl,
 })
 
 // Attach token to every request if available

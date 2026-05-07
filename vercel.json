@@ -4,6 +4,7 @@
   "buildCommand": "cd Client && npm run build",
   "outputDirectory": "Client/dist",
   "env": {
+    "VITE_API_BASE_URL": "https://akpu4all-api.onrender.com/api",
     "NODE_ENV": "production"
   }
 }
