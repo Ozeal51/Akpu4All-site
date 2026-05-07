@@ -6,10 +6,25 @@ dotenv.config()
 
 const uriFromArg = process.argv[2]
 const uri = uriFromArg || process.env.MONGO_URI
+const defaultDbName = process.env.MONGO_DB_NAME || 'akpu4all'
 
 const looksLikeMongoUri = (u) => !!u && /^mongodb(\+srv)?:\/\//i.test(u)
 
 const short = (s) => (s && s.length > 60 ? s.slice(0, 36) + '...' + s.slice(-20) : s)
+
+function normalizeMongoUri(inputUri) {
+  try {
+    const url = new URL(inputUri)
+    const currentPath = url.pathname.replace(/^\/+|\/+$/g, '')
+    if (!currentPath) {
+      url.pathname = `/${defaultDbName}`
+      return url.toString()
+    }
+    return inputUri
+  } catch (error) {
+    return inputUri
+  }
+}
 
 async function run() {
   if (!uri) {
@@ -22,10 +37,16 @@ async function run() {
     process.exit(2)
   }
 
-  console.log('Attempting to connect to MongoDB using URI:', short(uri))
+  const normalizedUri = normalizeMongoUri(uri)
+
+  if (normalizedUri !== uri) {
+    console.log(`No database name detected; defaulting to /${defaultDbName} instead of MongoDB's /test database.`)
+  }
+
+  console.log('Attempting to connect to MongoDB using URI:', short(normalizedUri))
 
   try {
-    await mongoose.connect(uri, {
+    await mongoose.connect(normalizedUri, {
       serverSelectionTimeoutMS: 5000,
       connectTimeoutMS: 5000,
       socketTimeoutMS: 10000,

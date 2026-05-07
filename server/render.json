@@ -7,7 +7,11 @@
   "env": {
     "MONGO_URI": {
       "description": "MongoDB Atlas connection string",
-      "value": "mongodb+srv://user:password@cluster.mongodb.net/akpu4all?retryWrites=true&w=majority"
+      "value": "mongodb+srv://user:password@cluster.mongodb.net/akpu4all?retryWrites=true&w=majority&appName=Akpu4all"
+    },
+    "MONGO_DB_NAME": {
+      "description": "MongoDB database name used when the URI path is missing",
+      "value": "akpu4all"
     },
     "JWT_SECRET": {
       "description": "Secret key for JWT token signing. Generate a random string.",

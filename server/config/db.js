@@ -6,6 +6,22 @@ const looksLikeMongoUri = (uri) => {
   return /^mongodb(\+srv)?:\/\//i.test(uri)
 }
 
+const normalizeMongoUri = (uri, fallbackDbName) => {
+  try {
+    const url = new URL(uri)
+    const currentPath = url.pathname.replace(/^\/+|\/+$/g, '')
+
+    if (!currentPath) {
+      url.pathname = `/${fallbackDbName}`
+      return url.toString()
+    }
+
+    return uri
+  } catch (error) {
+    return uri
+  }
+}
+
 const printConnectionHints = () => {
   console.error('\n🔎 MongoDB connection hints:')
   console.error('- Verify the `MONGO_URI` environment variable is set in your deployment (Render / Docker / env file).')
@@ -18,6 +34,7 @@ const printConnectionHints = () => {
 
 const connectDB = async () => {
   try {
+    const defaultDbName = process.env.MONGO_DB_NAME || 'akpu4all'
     const uri = process.env.MONGO_URI
 
     if (!uri) {
@@ -32,6 +49,11 @@ const connectDB = async () => {
       process.exit(1)
     }
 
+    const normalizedUri = normalizeMongoUri(uri, defaultDbName)
+    if (normalizedUri !== uri) {
+      console.warn(`⚠️  MONGO_URI had no database name; defaulting to "/${defaultDbName}" instead of MongoDB's "/test" database.`)
+    }
+
     // Connection options tuned for production
     const mongooseOptions = {
       maxPoolSize: 10,
@@ -43,7 +65,7 @@ const connectDB = async () => {
       connectTimeoutMS: 10000,
     }
 
-    const conn = await mongoose.connect(uri, mongooseOptions)
+    const conn = await mongoose.connect(normalizedUri, mongooseOptions)
 
     const env = process.env.NODE_ENV || 'development'
     console.log(`✅ MongoDB Connected: ${conn.connection.host} [${env}]`)

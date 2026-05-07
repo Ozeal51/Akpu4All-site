@@ -15,7 +15,8 @@ const { router: userRoutes } = require('./routes/userRoutes')
 
 const app = express()
 const port = process.env.PORT || 5000
-const isDev = process.env.NODE_ENV !== 'production'
+const environment = process.env.NODE_ENV || (process.env.RENDER ? 'production' : 'development')
+const isDev = environment !== 'production'
 
 // Validate required environment variables
 const requiredEnvVars = ['MONGO_URI', 'JWT_SECRET']
@@ -54,7 +55,7 @@ const isAllowedOrigin = (origin) => {
 
 logger.info('Server Configuration', {
   port,
-  environment: process.env.NODE_ENV || 'development',
+  environment,
   clientOrigins,
 })
 
@@ -96,7 +97,7 @@ app.get('/', (req, res) => {
     success: true,
     message: '🍽️ Akpu4All API is running!',
     version: '2.0.0',
-    environment: process.env.NODE_ENV || 'development',
+    environment,
     timestamp: new Date().toISOString(),
   })
 })
@@ -108,7 +109,7 @@ app.get('/health', (req, res) => {
     status: 'healthy',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    environment: process.env.NODE_ENV || 'development',
+    environment,
   })
 })
 
@@ -199,24 +200,25 @@ process.on('unhandledRejection', (reason, promise) => {
 // Start server
 server = app.listen(port, () => {
   const env = process.env.NODE_ENV || 'development'
+  const activeEnv = environment
   const startTime = new Date().toISOString()
 
   logger.info('Server Started Successfully', {
     port,
-    environment: env,
+    environment: activeEnv,
     timestamp: startTime,
   })
 
   if (isDev) {
     console.log(`
 ╔═══════════════════════════════════════════════════╗
-║   🍽️  AKPU4ALL API SERVER (${env.toUpperCase()})      ║
+║   🍽️  AKPU4ALL API SERVER (${activeEnv.toUpperCase()})      ║
 ╚═══════════════════════════════════════════════════╝
 
 🚀 Server running on port ${port}
 📡 API:    http://localhost:${port}
 ❤️  Health: http://localhost:${port}/health
-🌍 Environment: ${env}
+🌍 Environment: ${activeEnv}
 ⏰ Started: ${startTime}
 
 Available Routes:
