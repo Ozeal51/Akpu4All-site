@@ -7,6 +7,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "build": "echo \"Build complete - no compilation needed for Node.js server\"",
+    "check-mongo": "node scripts/check-mongo.js",
     "seed": "node seed/seedDatabase.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

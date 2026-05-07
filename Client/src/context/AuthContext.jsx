@@ -2,6 +2,23 @@ import { useState, useEffect, useCallback } from 'react'
 import { AuthContext } from './auth.js'
 import { authAPI } from '../services/api.js'
 
+function getAuthErrorMessage(err, fallbackMessage) {
+  const apiMessage = err.response?.data?.message || err.response?.data?.errors?.[0]?.msg
+  if (apiMessage) {
+    return apiMessage
+  }
+
+  if (err.code === 'ERR_NETWORK') {
+    return 'Cannot reach the server right now. Please check the API URL, CORS settings, or backend deployment.'
+  }
+
+  if (err.message) {
+    return err.message
+  }
+
+  return fallbackMessage
+}
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     try {
@@ -43,7 +60,7 @@ export function AuthProvider({ children }) {
       setUser(userData)
       return { success: true }
     } catch (err) {
-      const message = err.response?.data?.message || err.response?.data?.errors?.[0]?.msg || 'Registration failed'
+      const message = getAuthErrorMessage(err, 'Registration failed')
       setAuthError(message)
       return { success: false, message }
     }
@@ -60,7 +77,7 @@ export function AuthProvider({ children }) {
       return { success: true }
     } catch (err) {
       console.log('Login error:', err)
-      const message = err.response?.data?.message || err.response?.data?.errors?.[0]?.msg || 'Login failed'
+      const message = getAuthErrorMessage(err, 'Login failed')
       setAuthError(message)
       return { success: false, message }
     }
@@ -81,7 +98,7 @@ export function AuthProvider({ children }) {
       localStorage.setItem('akpu-user', JSON.stringify(updated))
       return { success: true }
     } catch (err) {
-      const message = err.response?.data?.message || 'Update failed'
+      const message = getAuthErrorMessage(err, 'Update failed')
       return { success: false, message }
     }
   }, [])
@@ -91,7 +108,7 @@ export function AuthProvider({ children }) {
       await authAPI.changePassword(data)
       return { success: true }
     } catch (err) {
-      const message = err.response?.data?.message || 'Password change failed'
+      const message = getAuthErrorMessage(err, 'Password change failed')
       return { success: false, message }
     }
   }, [])
