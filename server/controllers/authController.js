@@ -19,7 +19,41 @@ const register = async (req, res) => {
     const user = await User.create({ name, email, password, phone: phone || '' })
     sendTokenResponse(user, 201, res)
   } catch (error) {
-    console.error('Register Error:', error)
+    console.error('Register Error:', {
+      name: error?.name,
+      code: error?.code,
+      message: error?.message,
+      keyPattern: error?.keyPattern,
+      keyValue: error?.keyValue,
+    })
+
+    if (error?.code === 11000) {
+      return res.status(409).json({
+        success: false,
+        message: 'Email already in use',
+      })
+    }
+
+    if (error?.name === 'ValidationError') {
+      const validationErrors = Object.values(error.errors || {}).map((entry) => ({
+        field: entry.path,
+        message: entry.message,
+      }))
+
+      return res.status(400).json({
+        success: false,
+        message: validationErrors[0]?.message || 'Invalid registration data',
+        errors: validationErrors,
+      })
+    }
+
+    if (error?.name === 'MongoServerError' || error?.name === 'MongooseServerSelectionError') {
+      return res.status(503).json({
+        success: false,
+        message: 'Database temporarily unavailable. Please try again shortly.',
+      })
+    }
+
     res.status(500).json({ success: false, message: 'Server error during registration' })
   }
 }
