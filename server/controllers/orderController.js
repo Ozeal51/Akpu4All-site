@@ -2,6 +2,7 @@
 const mongoose = require('mongoose')
 const Order = require('../models/Order')
 const Product = require('../models/Product')
+const { logger } = require('../middleware/logger')
 
 const normalizeOrder = (order) => ({
   id: order._id,
@@ -23,29 +24,69 @@ const normalizeOrder = (order) => ({
   updatedAt: order.updatedAt,
 })
 
+const toValidObjectId = (value) => {
+  if (!value) return null
+
+  const candidate = typeof value === 'object' && value !== null
+    ? value._id || value.id
+    : value
+
+  const asString = String(candidate || '').trim()
+  if (!asString) return null
+
+  return mongoose.Types.ObjectId.isValid(asString) ? asString : null
+}
+
 const resolveItems = async (items = []) => {
   const resolved = []
 
   for (const item of items) {
+    if (!item || typeof item !== 'object') continue
+
     const productRef = item.product || item.productId
-    const product = productRef
-      ? await Product.findById(productRef)
-      : await Product.findOne({ $or: [{ name: item.productName }, { slug: (item.slug || '').toLowerCase() }] })
+    const productObjectId = toValidObjectId(productRef)
+    let product = null
+
+    try {
+      if (productObjectId) {
+        product = await Product.findById(productObjectId)
+      } else if (item.productName || item.name || item.slug) {
+        product = await Product.findOne({
+          $or: [{ name: item.productName || item.name }, { slug: (item.slug || '').toLowerCase() }],
+        })
+      }
+    } catch (lookupError) {
+      logger.warn('Skipping order item due to product lookup error', {
+        productRef,
+        productName: item.productName || item.name,
+        message: lookupError?.message,
+      })
+      continue
+    }
 
     const productName = item.productName || item.name || product?.name
     if (!productName) continue
 
-    const price = Number(item.price ?? product?.price ?? 0)
-    const quantity = Math.max(1, Number(item.quantity ?? 1))
+    const resolvedPrice = Number(item.price ?? product?.price ?? 0)
+    const resolvedQuantity = Number(item.quantity ?? 1)
+
+    if (!Number.isFinite(resolvedPrice) || resolvedPrice < 0) continue
+
+    const quantity = Number.isFinite(resolvedQuantity) && resolvedQuantity > 0
+      ? Math.floor(resolvedQuantity)
+      : 1
+
+    const lineTotal = resolvedPrice * quantity
+    if (!Number.isFinite(lineTotal) || lineTotal < 0) continue
 
     resolved.push({
       product: product?._id,
       productName,
       image: item.image || product?.image || '',
       category: item.category || product?.category || '',
-      price,
+      price: resolvedPrice,
       quantity,
-      lineTotal: price * quantity,
+      lineTotal,
     })
   }
 
@@ -78,31 +119,65 @@ const getOrder = async (req, res) => {
 }
 
 const createOrder = async (req, res) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ success: false, errors: errors.array() })
+  try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success: false, errors: errors.array() })
+    }
+
+    const items = await resolveItems(req.body.items)
+    if (!items.length) {
+      return res.status(400).json({ success: false, message: 'Order must contain at least one valid item' })
+    }
+
+    const order = await Order.create({
+      user: req.user.id,
+      source: req.body.source || 'web',
+      items,
+      customer: req.body.customer || {},
+      pricing: req.body.pricing || {},
+      status: req.body.status,
+      paymentMethod: req.body.paymentMethod,
+      paymentStatus: req.body.paymentStatus,
+      paymentReference: req.body.paymentReference,
+      delivery: req.body.delivery || {},
+      notes: req.body.notes || '',
+    })
+
+    return res.status(201).json({ success: true, order: normalizeOrder(order) })
+  } catch (error) {
+    logger.error('Create Order Error', {
+      message: error?.message,
+      name: error?.name,
+      code: error?.code,
+      stack: error?.stack,
+    })
+
+    if (error?.name === 'ValidationError') {
+      const validationErrors = Object.values(error.errors || {}).map((entry) => ({
+        field: entry.path,
+        message: entry.message,
+      }))
+
+      return res.status(400).json({
+        success: false,
+        message: validationErrors[0]?.message || 'Invalid order data',
+        errors: validationErrors,
+      })
+    }
+
+    if (error?.name === 'MongoServerError' || error?.name === 'MongooseServerSelectionError') {
+      return res.status(503).json({
+        success: false,
+        message: 'Database temporarily unavailable. Please try again shortly.',
+      })
+    }
+
+    return res.status(500).json({
+      success: false,
+      message: 'Unable to place order right now. Please try again.',
+    })
   }
-
-  const items = await resolveItems(req.body.items)
-  if (!items.length) {
-    return res.status(400).json({ success: false, message: 'Order must contain at least one valid item' })
-  }
-
-  const order = await Order.create({
-    user: req.user.id,
-    source: req.body.source || 'web',
-    items,
-    customer: req.body.customer || {},
-    pricing: req.body.pricing || {},
-    status: req.body.status,
-    paymentMethod: req.body.paymentMethod,
-    paymentStatus: req.body.paymentStatus,
-    paymentReference: req.body.paymentReference,
-    delivery: req.body.delivery || {},
-    notes: req.body.notes || '',
-  })
-
-  res.status(201).json({ success: true, order: normalizeOrder(order) })
 }
 
 const updateOrderStatus = async (req, res) => {
