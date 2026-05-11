@@ -8,6 +8,8 @@ const configuredApiBaseUrl =
   import.meta.env.REACT_APP_API_URL?.trim() ||
   (import.meta.env.DEV ? fallbackDevApiBaseUrl : fallbackProdApiBaseUrl)
 
+export const API_BASE_URL = configuredApiBaseUrl
+
 const API = axios.create({
   baseURL: configuredApiBaseUrl,
 })

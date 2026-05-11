@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { AuthContext } from './auth.js'
-import { authAPI } from '../services/api.js'
+import { authAPI, API_BASE_URL } from '../services/api.js'
 
 function getAuthErrorMessage(err, fallbackMessage) {
   const apiMessage = err.response?.data?.message || err.response?.data?.errors?.[0]?.msg
@@ -9,7 +9,7 @@ function getAuthErrorMessage(err, fallbackMessage) {
   }
 
   if (err.code === 'ERR_NETWORK') {
-    return 'Cannot reach the server right now. Please check the API URL, CORS settings, or backend deployment.'
+    return `Cannot reach the server right now. Please check the API URL (${API_BASE_URL}), CORS settings, or backend deployment.`
   }
 
   if (err.message) {
