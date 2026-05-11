@@ -41,6 +41,7 @@ const allowedOriginPatterns = [
   /^https?:\/\/localhost(?::\d+)?$/i,
   /^https:\/\/.+\.vercel\.app$/i,
   /^https:\/\/.+\.onrender\.com$/i,
+  /^https:\/\/(?:www\.)?akpu4all\.com\.ng$/i,
 ]
 
 const isAllowedOrigin = (origin) => {
