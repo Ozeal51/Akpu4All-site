@@ -1,13 +1,4 @@
-const fs = require('fs')
-const path = require('path')
-
 const getEffectiveNodeEnv = () => process.env.NODE_ENV || (process.env.RENDER ? 'production' : 'development')
-
-// Create logs directory if it doesn't exist
-const logsDir = path.join(__dirname, '../logs')
-if (!fs.existsSync(logsDir)) {
-  fs.mkdirSync(logsDir, { recursive: true })
-}
 
 // Logger utility for production logging
 class Logger {
@@ -20,7 +11,7 @@ class Logger {
     return new Date().toISOString()
   }
 
-  // Log to console and file
+  // Log to console (always)
   log(level, message, data = {}) {
     const logEntry = {
       timestamp: this.getTimestamp(),
@@ -30,16 +21,8 @@ class Logger {
       env: getEffectiveNodeEnv(),
     }
 
-    // Always log to console in development
-    if (this.isDev) {
-      console.log(`[${level}] ${message}`, data)
-    }
-
-    // Log to file in production
-    if (getEffectiveNodeEnv() === 'production') {
-      const logFile = path.join(logsDir, `${level.toLowerCase()}-${new Date().toISOString().split('T')[0]}.log`)
-      fs.appendFileSync(logFile, JSON.stringify(logEntry) + '\n', { encoding: 'utf8' })
-    }
+    // Always log to console (both dev and production for Render visibility
+    console.log(`[${level}] ${message}`, data)
   }
 
   info(message, data) {

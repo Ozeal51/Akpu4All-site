@@ -1,6 +1,7 @@
-﻿const { validationResult } = require('express-validator')
+const { validationResult } = require('express-validator')
 const User = require('../models/User')
 const { sendTokenResponse } = require('../utils/generateToken')
+const { logger } = require('../middleware/logger')
 
 const register = async (req, res) => {
   const errors = validationResult(req)
@@ -19,12 +20,13 @@ const register = async (req, res) => {
     const user = await User.create({ name, email, password, phone: phone || '' })
     sendTokenResponse(user, 201, res)
   } catch (error) {
-    console.error('Register Error:', {
+    logger.error('Register Error:', {
       name: error?.name,
       code: error?.code,
       message: error?.message,
       keyPattern: error?.keyPattern,
       keyValue: error?.keyValue,
+      stack: error?.stack,
     })
 
     if (error?.code === 11000) {
@@ -82,7 +84,10 @@ const login = async (req, res) => {
 
     sendTokenResponse(user, 200, res)
   } catch (error) {
-    console.error('Login Error:', error)
+    logger.error('Login Error:', {
+      message: error?.message,
+      stack: error?.stack,
+    })
     res.status(500).json({ success: false, message: 'Server error during login' })
   }
 }
