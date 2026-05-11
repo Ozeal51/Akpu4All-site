@@ -1,8 +1,12 @@
 import axios from 'axios'
 
 const fallbackProdApiBaseUrl = 'https://akpu4all-api.onrender.com/api'
-const defaultApiBaseUrl = import.meta.env.DEV ? 'http://localhost:5000/api' : fallbackProdApiBaseUrl
-const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim() || defaultApiBaseUrl
+const fallbackDevApiBaseUrl = 'http://localhost:5000/api'
+const configuredApiBaseUrl =
+  import.meta.env.VITE_API_BASE_URL?.trim() ||
+  import.meta.env.VITE_API_URL?.trim() ||
+  import.meta.env.REACT_APP_API_URL?.trim() ||
+  (import.meta.env.DEV ? fallbackDevApiBaseUrl : fallbackProdApiBaseUrl)
 
 const API = axios.create({
   baseURL: configuredApiBaseUrl,
