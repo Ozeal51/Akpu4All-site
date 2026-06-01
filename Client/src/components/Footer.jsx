@@ -8,7 +8,7 @@ export default function Footer() {
           <div className="mb-12 rounded-[2rem] border border-dark-200 bg-primary-50 p-6 shadow-soft md:p-8">
             <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-dark-500">Get 10% off your first order</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-dark-500">Get your first order</p>
                 <h3 className="mt-3 font-display text-3xl font-bold text-dark-900 md:text-4xl">Join for fresh meal updates and featured picks.</h3>
                 <p className="mt-3 max-w-2xl text-sm text-dark-600 md:text-base">Get updates on trending dishes, refreshing drinks, and limited-time offers from Akpu4All.</p>
               </div>

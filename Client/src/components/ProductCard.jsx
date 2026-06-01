@@ -77,7 +77,7 @@ export default function ProductCard({ product }) {
           onClick={handleAddToCart}
           className="btn-primary mt-auto w-full"
         >
-          Buy Now
+        
         </button>
       </div>
     </motion.div>

@@ -10,7 +10,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Premium earthy palette inspired by food & Saki
+        // Premium earthy palette inspired by food
         primary: {
           50: '#faf8f3',
           100: '#f5f1e8',

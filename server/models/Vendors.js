@@ -90,7 +90,7 @@ const vendorSchema = new mongoose.Schema(
     },
     openingHours: {
       open: { type: String, default: '08:00' },
-      close: { type: String, default: '22:00' },
+      close: { type: String, default: '21:00' },
     },
     socialLinks: {
       website: { type: String, default: '' },
